@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.redlimerl.ghostrunner.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ClientAdvancementManagerMixin",
+    "ClientPlayerEntityMixin",
+    "LivingEntityRendererMixin",
+    "MinecraftClientMixin",
+    "screen.CreateWorldScreenMixin",
+    "screen.CreditsScreenMixin",
+    "screen.MoreOptionsDialogMixin",
+    "screen.TitleScreenMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
