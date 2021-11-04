@@ -1,9 +1,7 @@
-# Fabric Example Mod
+# GhostRunner - 1.16.1
 
-## Setup
+## Download
+- [modrinth](https://modrinth.com/mod/ghost-runner)
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+## Dependencies
+- [SpeedRunIGT](https://github.com/RedLime/SpeedRunIGT)

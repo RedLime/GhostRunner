@@ -16,7 +16,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
@@ -33,10 +32,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Difficulty;
 import org.lwjgl.glfw.GLFW;
 
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.OptionalLong;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
@@ -58,6 +54,7 @@ public class GhostRunner implements ClientModInitializer {
 
     public static boolean isComplete = false;
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static OptionalLong optionalLong = OptionalLong.empty();
     public static boolean isFsg = false;
     public static boolean isHardcore = false;

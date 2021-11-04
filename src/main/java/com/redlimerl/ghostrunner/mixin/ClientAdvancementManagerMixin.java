@@ -1,6 +1,5 @@
 package com.redlimerl.ghostrunner.mixin;
 
-import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.record.GhostInfo;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.record.data.Timeline;
@@ -10,7 +9,6 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementManager;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.client.network.ClientAdvancementManager;
-import net.minecraft.data.server.AdvancementsProvider;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

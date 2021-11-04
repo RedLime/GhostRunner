@@ -194,7 +194,6 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
             client.openScreen(new ConfirmScreen(t -> {
                 if (t) {
                     ReplayGhost.removeInSelectedGhosts(ghost.getSeed(), ghost.getUuid());
-                    client.openScreen(new ProgressScreen());
                     File file = ghost.getPath().toFile();
                     if (file.exists() && file.isDirectory()) {
                         try {

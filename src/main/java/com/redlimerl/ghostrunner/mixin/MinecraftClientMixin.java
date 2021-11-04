@@ -6,7 +6,6 @@ import com.redlimerl.ghostrunner.record.GhostInfo;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.render.GhostRenderFix;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.registry.RegistryTracker;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.gen.GeneratorOptions;

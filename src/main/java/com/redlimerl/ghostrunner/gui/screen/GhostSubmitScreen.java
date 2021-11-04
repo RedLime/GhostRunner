@@ -5,7 +5,10 @@ import com.redlimerl.ghostrunner.MCSpeedRunAPI;
 import com.redlimerl.ghostrunner.data.SubmitData;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.Utils;
-import net.minecraft.client.gui.screen.*;
+import net.minecraft.client.gui.screen.ConfirmScreen;
+import net.minecraft.client.gui.screen.ProgressScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
@@ -36,29 +39,24 @@ public class GhostSubmitScreen extends Screen {
 
         client.keyboard.enableRepeatEvents(true);
         this.submitButton = addButton(new ButtonWidget(width / 2 - 100, height - 65, 200, 20, ScreenTexts.PROCEED,
-                (button) -> {
-                    ProgressScreen ps = new ProgressScreen();
-                    ps.method_15414(new TranslatableText("ghostrunner.message.submitting_record"));
-                    client.openScreen(ps);
-                    client.execute(() -> {
-                        try {
-                            String record = MCSpeedRunAPI.request(new SubmitData(ghostData, this.descriptionField.getText(), this.videoUrlField.getText()));
-                            ghostData.setSubmitted(true);
-                            ghostData.setRecordURL(record);
-                            ghostData.update();
-                            client.openScreen(new ConfirmScreen(bool -> {
-                                if (bool) {
-                                    Util.getOperatingSystem().open(record);
-                                } else {
-                                    client.openScreen(parent);
-                                }
-                            }, new TranslatableText("ghostrunner.title.success"), new TranslatableText("ghostrunner.message.submitted_record"), new TranslatableText("chat.link.open"), ScreenTexts.DONE));
-                        } catch (IOException e) {
-                            client.openScreen(new GhostErrorScreen(parent, new TranslatableText("selectWorld.recreate.error.title"), new TranslatableText("ghostrunner.message.failed_submit_record")));
-                            e.printStackTrace();
-                        }
-                    });
-                }));
+                (button) -> client.execute(() -> {
+                    try {
+                        String record = MCSpeedRunAPI.request(new SubmitData(ghostData, this.descriptionField.getText(), this.videoUrlField.getText()));
+                        ghostData.setSubmitted(true);
+                        ghostData.setRecordURL(record);
+                        ghostData.update();
+                        client.openScreen(new ConfirmScreen(bool -> {
+                            if (bool) {
+                                Util.getOperatingSystem().open(record);
+                            } else {
+                                client.openScreen(parent);
+                            }
+                        }, new TranslatableText("ghostrunner.title.success"), new TranslatableText("ghostrunner.message.submitted_record"), new TranslatableText("chat.link.open"), ScreenTexts.DONE));
+                    } catch (IOException e) {
+                        client.openScreen(new GhostErrorScreen(parent, new TranslatableText("selectWorld.recreate.error.title"), new TranslatableText("ghostrunner.message.failed_submit_record")));
+                        e.printStackTrace();
+                    }
+                })));
 
         addButton(new ButtonWidget(width / 2 - 100, this.submitButton.y + 24, 200, 20, ScreenTexts.CANCEL, (button) -> client.openScreen(parent)));
 

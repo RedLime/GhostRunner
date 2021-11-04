@@ -1,11 +1,9 @@
 package com.redlimerl.ghostrunner.record;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.entity.GhostEntity;
 import com.redlimerl.ghostrunner.record.data.Timeline;
 import com.redlimerl.ghostrunner.util.Utils;
-import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;

@@ -2,14 +2,7 @@ package com.redlimerl.ghostrunner.data;
 
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.crypt.Crypto;
-import com.redlimerl.ghostrunner.gui.widget.OpacitySliderWidget;
 import com.redlimerl.speedrunigt.option.OptionArgument;
-import com.redlimerl.speedrunigt.option.SpeedRunOptionScreen;
-import com.redlimerl.speedrunigt.option.SpeedRunOptions;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class RunnerOptions {

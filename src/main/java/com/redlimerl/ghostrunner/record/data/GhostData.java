@@ -1,16 +1,8 @@
 package com.redlimerl.ghostrunner.record.data;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.mojang.authlib.minecraft.MinecraftSessionService;
-import com.redlimerl.ghostrunner.MCSpeedRunAPI;
-import com.redlimerl.ghostrunner.data.SubmitData;
-import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.PlayerSkinProvider;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.Difficulty;
 import org.apache.commons.compress.utils.Charsets;
 import org.apache.commons.io.FileUtils;
@@ -22,7 +14,6 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 import static com.redlimerl.ghostrunner.GhostRunner.*;

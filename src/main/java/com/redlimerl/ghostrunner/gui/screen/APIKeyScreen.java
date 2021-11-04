@@ -1,6 +1,5 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
-import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;

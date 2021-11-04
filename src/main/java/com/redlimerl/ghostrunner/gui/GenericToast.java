@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
@@ -23,6 +22,7 @@ public class GenericToast implements Toast {
         this.icon = icon;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Visibility draw(MatrixStack matrices, ToastManager manager, long currentTime) {
         if (this.justUpdated) {
