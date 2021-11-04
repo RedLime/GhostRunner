@@ -33,11 +33,11 @@ public class GhostData {
     private final long seed;
     private long realTimeAttack;
     private long inGameTime;
-    private Instant createdDate;
+    private String createdDate;
     private final String key;
     private boolean isSubmitted;
     private boolean isUseF3;
-    private Difficulty difficulty;
+    private String difficulty;
     private String recordURL;
 
     public static GhostData loadData(Path path) {
@@ -72,17 +72,17 @@ public class GhostData {
                 seed,
                 0,
                 0,
-                Instant.now(),
+                Instant.now().toString(),
                 RandomStringUtils.randomAlphanumeric(32),
                 false,
                 false,
-                Difficulty.EASY,
+                Difficulty.EASY.getName(),
                 ""
         );
     }
 
     public GhostData(UUID uuid, String modVersion, String clientVersion, int ghostVersion, String ghostName, UUID ghostUserUuid, String ghostUserName,
-                     int ghostType, long seed, long realTimeAttack, long inGameTime, Instant createdDate, String key, boolean isSubmitted, boolean isUseF3, Difficulty difficulty, String recordURL) {
+                     int ghostType, long seed, long realTimeAttack, long inGameTime, String createdDate, String key, boolean isSubmitted, boolean isUseF3, String difficulty, String recordURL) {
         this.uuid = uuid;
         this.modVersion = modVersion;
         this.clientVersion = clientVersion;
@@ -171,11 +171,11 @@ public class GhostData {
     }
 
     public Date getCreatedDate() {
-        return Date.from(createdDate);
+        return Date.from(Instant.parse(createdDate));
     }
 
     public void updateCreatedDate() {
-        this.createdDate = Instant.now();
+        this.createdDate = Instant.now().toString();
     }
 
     public String getKey() {
@@ -183,7 +183,7 @@ public class GhostData {
     }
 
     public String getDefaultName() {
-        return seed + "_" + InGameTimer.timeToStringFormat(inGameTime).replace(':', '.') + "_" + DATE_FORMAT.format(Date.from(createdDate));
+        return seed + "_" + InGameTimer.timeToStringFormat(inGameTime).replace(':', '.') + "_" + DATE_FORMAT.format(getCreatedDate());
     }
 
     public Path getPath() {
@@ -191,11 +191,11 @@ public class GhostData {
     }
 
     public Difficulty getDifficulty() {
-        return difficulty;
+        return Difficulty.byName(difficulty);
     }
 
     public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+        this.difficulty = difficulty.getName();
     }
 
     public boolean isUseF3() {
