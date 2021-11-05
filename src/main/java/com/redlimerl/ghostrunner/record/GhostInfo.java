@@ -2,7 +2,6 @@ package com.redlimerl.ghostrunner.record;
 
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.crypt.Crypto;
-import com.redlimerl.ghostrunner.data.RunnerStatistic;
 import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
@@ -35,15 +34,6 @@ public class GhostInfo {
                     new GenericToast("IGT: "+InGameTimer.timeToStringFormat(inGameTimer.getInGameTime()),
                             "RTA: "+InGameTimer.timeToStringFormat(inGameTimer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
-            
-            RunnerStatistic.addStatistic(RunnerStatistic.Type.SHOW_CREDIT_SCREENS);
-            RunnerStatistic.updateBestStatistic(RunnerStatistic.Type.BEST_TIME, (int) igt.getInGameTime());
-            if (INSTANCE.ghostData.getType() == GhostType.RSG)
-                RunnerStatistic.updateBestStatistic(RunnerStatistic.Type.BEST_RSG_TIME, (int) igt.getInGameTime());
-            else if (INSTANCE.ghostData.getType() == GhostType.FSG)
-                RunnerStatistic.updateBestStatistic(RunnerStatistic.Type.BEST_FSG_TIME, (int) igt.getInGameTime());
-            else
-                RunnerStatistic.updateBestStatistic(RunnerStatistic.Type.BEST_SSG_TIME, (int) igt.getInGameTime());
         });
     }
 
@@ -128,22 +118,24 @@ public class GhostInfo {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
-        ghostData.setRealTimeAttack(inGameTimer.getRealTimeAttack());
-        ghostData.setInGameTime(inGameTimer.getInGameTime());
-        ghostData.updateCreatedDate();
-        ghostData.setGhostName(ghostData.getDefaultName());
-        String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
+        new Thread(() -> {
+            ghostData.setRealTimeAttack(inGameTimer.getRealTimeAttack());
+            ghostData.setInGameTime(inGameTimer.getInGameTime());
+            ghostData.updateCreatedDate();
+            ghostData.setGhostName(ghostData.getDefaultName());
+            String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
 
-        File ghostFile = ghostData.getPath().toFile();
-        ghostFile.mkdirs();
+            File ghostFile = ghostData.getPath().toFile();
+            ghostFile.mkdirs();
 
-        try {
-            FileUtils.writeStringToFile(new File(ghostFile, ".gri"), ghostData.toString(), Charsets.UTF_8);
-            FileUtils.writeStringToFile(new File(ghostFile, ".grt"), timeline.toString(), Charsets.UTF_8);
-            FileUtils.writeStringToFile(new File(ghostFile, ".grd"), playData, Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                FileUtils.writeStringToFile(new File(ghostFile, ".gri"), ghostData.toString(), Charsets.UTF_8);
+                FileUtils.writeStringToFile(new File(ghostFile, ".grt"), timeline.toString(), Charsets.UTF_8);
+                FileUtils.writeStringToFile(new File(ghostFile, ".grd"), playData, Charsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @Override

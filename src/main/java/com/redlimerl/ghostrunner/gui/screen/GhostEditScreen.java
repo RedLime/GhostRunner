@@ -18,7 +18,6 @@ import net.minecraft.item.Items;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class GhostEditScreen extends Screen {
@@ -53,12 +52,8 @@ public class GhostEditScreen extends Screen {
         this.saveButton = addButton(new ButtonWidget(width / 2 - 100, yPos + 24, 200, 20, new TranslatableText("ghostrunner.menu.change_ghost_name"),
                 (button) -> {
                     this.ghost.setGhostName(this.ghostNameTextField.getText());
-                    try {
-                        ghost.update();
-                        isChangedName = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    this.ghost.update();
+                    isChangedName = true;
                 }));
 
         addButton(new ButtonWidget(width / 2 - 100, yPos + 57, 200, 20, new TranslatableText("ghostrunner.menu.copy_seed"),

@@ -50,7 +50,7 @@ public class GhostRunner implements ClientModInitializer {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static String MOD_VERSION;
     public static final String CLIENT_VERSION = SharedConstants.getGameVersion().getName();
-    public static final int GHOST_VERSION = 2;
+    public static final int GHOST_VERSION = 3;
 
     public static boolean isComplete = false;
 
@@ -75,7 +75,7 @@ public class GhostRunner implements ClientModInitializer {
             Registry.ENTITY_TYPE,
             new Identifier(MOD_ID, "ghost"),
             FabricEntityTypeBuilder.create(SpawnGroup.MISC, GhostEntity::new)
-                    .disableSaving().fireImmune()//.disableSummon()
+                    .disableSaving().fireImmune().disableSummon()
                     .dimensions(EntityDimensions.changing(0.6f, 1.8f)).build());
 
     @Override

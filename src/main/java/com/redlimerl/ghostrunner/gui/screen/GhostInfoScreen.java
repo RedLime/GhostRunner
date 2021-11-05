@@ -93,4 +93,11 @@ public class GhostInfoScreen extends Screen {
             }
         }
     }
+
+    @Override
+    public void onClose() {
+        if (client != null) {
+            client.openScreen(parent);
+        }
+    }
 }

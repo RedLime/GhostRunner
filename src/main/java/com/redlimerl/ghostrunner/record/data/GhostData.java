@@ -54,7 +54,7 @@ public class GhostData {
         }
 
         //For old ghost checking
-        if (result.ghostVersion == 1) throw new IllegalArgumentException("Old ghost file, you cannot use this ghost.");
+        if (result.ghostVersion < 3) throw new IllegalArgumentException("Old ghost file, you cannot use this ghost.");
 
         return result;
     }
@@ -223,10 +223,16 @@ public class GhostData {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void update() throws IOException {
-        File ghostFile = this.getPath().toFile();
-        ghostFile.mkdirs();
+    public void update() {
+        new Thread(() -> {
+            File ghostFile = this.getPath().toFile();
+            ghostFile.mkdirs();
 
-        FileUtils.writeStringToFile(new File(ghostFile, ".gri"), this.toString(), Charsets.UTF_8);
+            try {
+                FileUtils.writeStringToFile(new File(ghostFile, ".gri"), this.toString(), Charsets.UTF_8);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

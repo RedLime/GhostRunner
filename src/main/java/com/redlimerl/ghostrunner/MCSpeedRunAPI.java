@@ -42,7 +42,6 @@ public class MCSpeedRunAPI {
 
         InputStreamReader r = new InputStreamReader(c.getInputStream(), StandardCharsets.UTF_8);
         JsonElement jsonElement = new JsonParser().parse(r);
-        System.out.println(jsonElement.toString());
         r.close();
 
         return jsonElement.getAsJsonObject().get("data").getAsJsonObject().get("weblink").getAsString();

@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.mixin;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.data.RunnerStatistic;
 import com.redlimerl.ghostrunner.record.GhostInfo;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.render.GhostRenderFix;
@@ -26,16 +25,6 @@ public class MinecraftClientMixin {
 
     @Inject(method = "method_29607(Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Lnet/minecraft/world/gen/GeneratorOptions;)V", at = @At("TAIL"))
     private void createWorld(String worldName, LevelInfo levelInfo, RegistryTracker.Modifiable modifiable, GeneratorOptions generatorOptions, CallbackInfo ci) {
-        RunnerStatistic.addStatistic(RunnerStatistic.Type.CREATED_WORLDS);
-        if (GhostRunner.isHardcore)
-            RunnerStatistic.addStatistic(RunnerStatistic.Type.CREATED_HARDCORE_WORLDS);
-        if (!GhostRunner.optionalLong.isPresent())
-            RunnerStatistic.addStatistic(RunnerStatistic.Type.CREATED_RSG_WORLDS);
-        else if (GhostRunner.isFsg)
-            RunnerStatistic.addStatistic(RunnerStatistic.Type.CREATED_FSG_WORLDS);
-        else
-            RunnerStatistic.addStatistic(RunnerStatistic.Type.CREATED_SSG_WORLDS);
-
         GhostRunner.isUseF3 = false;
         GhostRunner.minimumDifficulty = Difficulty.HARD;
 

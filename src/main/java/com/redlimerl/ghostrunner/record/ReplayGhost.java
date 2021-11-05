@@ -102,7 +102,7 @@ public class ReplayGhost {
             GhostInfo ghostData = GhostInfo.fromData(uuid);
             if (ghostData.getGhostData().getSeed() == seed && Objects.equals(ghostData.getGhostData().getClientVersion(), GhostRunner.CLIENT_VERSION)) {
                 ghosts.put(ghostData, null);
-                Utils.downloadPlayerSkin(MinecraftClient.getInstance(), ghostData.getGhostData().getGhostUserUuid());
+                Utils.downloadPlayerSkin(ghostData.getGhostData().getGhostUserUuid());
             }
         }
     }

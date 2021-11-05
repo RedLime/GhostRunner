@@ -24,9 +24,9 @@ public class Utils {
         }
     }
 
-    public static void downloadPlayerSkin(MinecraftClient client, UUID uuid) {
+    public static void downloadPlayerSkin(UUID uuid) {
         try {
-            client.execute(() -> {
+            new Thread(() -> {
                 MinecraftSessionService sessionService = MinecraftClient.getInstance().getSessionService();
                 PlayerSkinProvider skinProvider = MinecraftClient.getInstance().getSkinProvider();
 
@@ -40,7 +40,7 @@ public class Utils {
                         ReplayGhost.addPlayerSkin(uuid, skin);
                     }
                 }
-            });
+            }).start();
         } catch (Exception e) {
             GhostRunner.debug("Failed load ghost's skin.");
         }
