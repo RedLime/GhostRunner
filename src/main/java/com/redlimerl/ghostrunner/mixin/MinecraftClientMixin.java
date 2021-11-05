@@ -25,8 +25,8 @@ public class MinecraftClientMixin {
 
     @Inject(method = "method_29607(Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Lnet/minecraft/world/gen/GeneratorOptions;)V", at = @At("TAIL"))
     private void createWorld(String worldName, LevelInfo levelInfo, RegistryTracker.Modifiable modifiable, GeneratorOptions generatorOptions, CallbackInfo ci) {
-        GhostRunner.isUseF3 = false;
-        GhostRunner.minimumDifficulty = Difficulty.HARD;
+        GhostRunner.IS_USE_F3 = false;
+        GhostRunner.MINIMUM_DIFFICULTY = Difficulty.HARD;
 
         GhostInfo.INSTANCE.setup(generatorOptions.getSeed());
         ReplayGhost.insertBrains(generatorOptions.getSeed());

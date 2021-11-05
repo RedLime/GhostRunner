@@ -33,13 +33,13 @@ public abstract class ClientPlayerEntityMixin extends PlayerEntity {
         if (InGameTimer.INSTANCE.getStatus() == TimerStatus.RUNNING) {
             GhostInfo.INSTANCE.update(new PlayerLog(this));
             ReplayGhost.tickGhost();
-            if (!GhostRunner.isUseF3 && client.options.debugEnabled) {
-                GhostRunner.isUseF3 = true;
+            if (!GhostRunner.IS_USE_F3 && client.options.debugEnabled) {
+                GhostRunner.IS_USE_F3 = true;
                 GhostInfo.INSTANCE.getGhostData().setUseF3(true);
             }
-            if (world.getDifficulty().getId() < GhostRunner.minimumDifficulty.getId()) {
-                GhostRunner.minimumDifficulty = world.getDifficulty();
-                GhostInfo.INSTANCE.getGhostData().setDifficulty(GhostRunner.minimumDifficulty);
+            if (world.getDifficulty().getId() < GhostRunner.MINIMUM_DIFFICULTY.getId()) {
+                GhostRunner.MINIMUM_DIFFICULTY = world.getDifficulty();
+                GhostInfo.INSTANCE.getGhostData().setDifficulty(GhostRunner.MINIMUM_DIFFICULTY);
             }
         }
     }

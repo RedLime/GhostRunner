@@ -29,7 +29,7 @@ public class GhostInfo {
     private static final InGameTimer inGameTimer = InGameTimer.INSTANCE;
     static {
         InGameTimer.onComplete(igt -> {
-            GhostRunner.isComplete = true;
+            GhostRunner.IS_COMPLETED = true;
             MinecraftClient.getInstance().getToastManager().add(
                     new GenericToast("IGT: "+InGameTimer.timeToStringFormat(inGameTimer.getInGameTime()),
                             "RTA: "+InGameTimer.timeToStringFormat(inGameTimer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
@@ -88,8 +88,8 @@ public class GhostInfo {
 
     public void setup(long seed) {
         this.clear();
-        currentGhostType = GhostRunner.optionalLong.isPresent() ? (GhostRunner.isFsg ? GhostType.FSG : GhostType.SSG) : GhostType.RSG;
-        ghostData = GhostData.create(seed, currentGhostType, GhostRunner.isHardcore);
+        currentGhostType = GhostRunner.optionalLong.isPresent() ? (GhostRunner.IS_FSG ? GhostType.FSG : GhostType.SSG) : GhostType.RSG;
+        ghostData = GhostData.create(seed, currentGhostType, GhostRunner.IS_HARDCORE);
 
         GhostRunner.optionalLong = OptionalLong.empty();
     }

@@ -83,7 +83,7 @@ public class GhostEditScreen extends Screen {
                 } : (button) -> Util.getOperatingSystem().open(ghost.getRecordURL())));
         this.submitButton.active = !ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost);
 
-        addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.BACK, (button) -> close()));
+        addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));
     }
 
     @Override

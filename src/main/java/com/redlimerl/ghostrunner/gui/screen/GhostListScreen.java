@@ -1,16 +1,19 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
+import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.gui.widget.GhostListWidget;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.TarGzUtil;
+import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.speedrunigt.option.SpeedRunOptionScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -50,13 +53,17 @@ public class GhostListScreen extends Screen {
         assert this.client != null;
         this.client.keyboard.enableRepeatEvents(true);
 
-        this.searchBox = new TextFieldWidget(textRenderer, width / 2 - 22, 22, 200, 20, null, new TranslatableText("selectWorld.search"));
+        this.searchBox = new TextFieldWidget(textRenderer, width / 2 - 22, 22, 180, 20, null, new TranslatableText("selectWorld.search"));
         this.searchBox.setChangedListener((string) -> this.ghostList.filter(() -> string, filterType, order, false));
 
         this.ghostList = new GhostListWidget(this, client, width, height, 48, height - 64, 54, () -> searchBox.getText(), this.ghostList);
 
         children.add(this.searchBox);
         children.add(this.ghostList);
+
+        addButton(new TexturedButtonWidget(width / 2 + 168, 22, 20, 20, Utils.getUpdateButtonOffset(), 0,
+                20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64,
+                (button) -> client.openScreen(new GhostRunnerInfoScreen(this)), new TranslatableText("ghostrunner.title")));
 
         addButton(new ButtonWidget(width / 2 - 176, 22, 84, 20,
                 new TranslatableText("ghostrunner.menu.order").append(": ").append(getOrder()), (buttonWidget) -> {

@@ -36,7 +36,13 @@ public class GenericToast implements Toast {
         manager.drawTexture(matrices, 0, 0, 0, 32, 160, 32);
         float xpos = this.icon != null ? 30: 10;
         if (this.descriptionKey == null) {
-            client.textRenderer.draw(matrices, this.getLocalizedTitle(), xpos, 12, 0x000000);
+            String[] title = this.getLocalizedTitle().split("\n");
+            if (title.length == 2) {
+                client.textRenderer.draw(matrices, title[0], xpos, 7, 0x000000);
+                client.textRenderer.draw(matrices, title[1], xpos, 18, 0x000000);
+            } else {
+                client.textRenderer.draw(matrices, this.getLocalizedTitle(), xpos, 12, 0x000000);
+            }
         } else {
             client.textRenderer.draw(matrices, this.getLocalizedTitle(), xpos, 7, 0x000000);
             client.textRenderer.draw(matrices, this.getLocalizedDescription(), xpos, 18, 0x000000);

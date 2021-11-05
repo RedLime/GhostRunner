@@ -67,7 +67,7 @@ public class GhostSubmitScreen extends Screen {
 
         addButton(new ButtonWidget(width / 2 - 100, this.submitButton.y + 24, 200, 20, ScreenTexts.CANCEL, (button) -> client.openScreen(parent)));
 
-        this.addButton(new TexturedButtonWidget(submitButton.x - 24, submitButton.y, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 32, 64, (buttonWidget) -> {
+        this.addButton(new TexturedButtonWidget(submitButton.x - 24, submitButton.y, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null) {
                 this.client.openScreen(new GhostInfoScreen(this, ghostData));
             }

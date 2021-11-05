@@ -3,8 +3,10 @@ package com.redlimerl.ghostrunner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redlimerl.ghostrunner.data.RunnerOptions;
+import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.entity.GhostEntity;
 import com.redlimerl.ghostrunner.gui.screen.APIKeyScreen;
+import com.redlimerl.ghostrunner.gui.screen.GhostRunnerInfoScreen;
 import com.redlimerl.ghostrunner.gui.widget.OpacitySliderWidget;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.fabricmc.api.ClientModInitializer;
@@ -52,14 +54,15 @@ public class GhostRunner implements ClientModInitializer {
     public static final String CLIENT_VERSION = SharedConstants.getGameVersion().getName();
     public static final int GHOST_VERSION = 3;
 
-    public static boolean isComplete = false;
-
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static OptionalLong optionalLong = OptionalLong.empty();
-    public static boolean isFsg = false;
-    public static boolean isHardcore = false;
-    public static boolean isUseF3 = false;
-    public static Difficulty minimumDifficulty = Difficulty.HARD;
+    public static boolean IS_FSG = false;
+    public static boolean IS_HARDCORE = false;
+    public static boolean IS_USE_F3 = false;
+    public static boolean IS_COMPLETED = false;
+    public static Difficulty MINIMUM_DIFFICULTY = Difficulty.HARD;
+
+    public static final UpdateStatus UPDATE_STATUS = new UpdateStatus();
 
     static {
         if (FabricLoader.getInstance().getModContainer(MOD_ID).isPresent()) {
@@ -96,12 +99,8 @@ public class GhostRunner implements ClientModInitializer {
             }
         });
 
-        SpeedRunOptions.addOptionButton(screen ->
-                new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
-                })
-        );
+        UPDATE_STATUS.check();
+
         SpeedRunOptions.addOptionButton(screen -> new OpacitySliderWidget());
         SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
@@ -109,7 +108,18 @@ public class GhostRunner implements ClientModInitializer {
                     if (client != null) client.openScreen(new APIKeyScreen(bool -> client.openScreen(screen)));
                 })
         );
-
+        SpeedRunOptions.addOptionButton(screen ->
+                new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
+                    MinecraftClient client = MinecraftClient.getInstance();
+                    if (client != null) client.openScreen(new GhostRunnerInfoScreen(screen));
+                })
+        );
+        SpeedRunOptions.addOptionButton(screen ->
+                new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
+                    MinecraftClient client = MinecraftClient.getInstance();
+                    if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
+                })
+        );
     }
 
     public static void debug(Object obj) {

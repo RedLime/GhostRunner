@@ -35,13 +35,13 @@ public abstract class CreateWorldScreenMixin extends Screen {
     @Inject(method = "init", at = @At("HEAD"))
     private void initButton(CallbackInfo ci) {
         this.fsgButton = addButton(new ButtonWidget(this.width / 2 + 5, 151, 150, 20,
-                new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.isFsg ? ScreenTexts.YES : ScreenTexts.NO), (buttonWidget) -> {
-            GhostRunner.isFsg = !GhostRunner.isFsg;
-            buttonWidget.setMessage(new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.isFsg ? ScreenTexts.YES : ScreenTexts.NO));
+                new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.IS_FSG ? ScreenTexts.YES : ScreenTexts.NO), (buttonWidget) -> {
+            GhostRunner.IS_FSG = !GhostRunner.IS_FSG;
+            buttonWidget.setMessage(new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.IS_FSG ? ScreenTexts.YES : ScreenTexts.NO));
         }));
         this.fsgButton.visible = false;
 
-        this.ghostButton = addButton(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 32, 64, (buttonWidget) -> {
+        this.ghostButton = addButton(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null && GhostRunner.optionalLong.isPresent()) {
                 this.client.openScreen(new GhostSelectScreen(this, GhostRunner.optionalLong.getAsLong()));
             }
@@ -57,7 +57,7 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
-        GhostRunner.isHardcore = this.hardcore;
+        GhostRunner.IS_HARDCORE = this.hardcore;
         this.ghostButton.visible = GhostRunner.optionalLong.isPresent();
     }
 

@@ -44,4 +44,16 @@ public class RunnerOptions {
             return Crypto.encrypt(string, API_HASH_KEY);
         }
     };
+
+    public static final OptionArgument<Boolean> UPDATE_NOTIFICATION = new OptionArgument<Boolean>(new Identifier(GhostRunner.MOD_ID, "update_notification"), true) {
+        @Override
+        public Boolean valueFromString(String s) {
+            return Boolean.valueOf(s);
+        }
+
+        @Override
+        public String valueToString(Boolean aBoolean) {
+            return Boolean.toString(aBoolean);
+        }
+    };
 }

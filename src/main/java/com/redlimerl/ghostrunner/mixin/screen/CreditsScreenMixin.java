@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CreditsScreenMixin {
     @Inject(method = "close", at = @At("TAIL"))
     private void closeMixin(CallbackInfo ci) {
-        if (GhostRunner.isComplete) {
-            GhostRunner.isComplete = false;
+        if (GhostRunner.IS_COMPLETED) {
+            GhostRunner.IS_COMPLETED = false;
             GhostInfo.INSTANCE.save();
         }
     }
