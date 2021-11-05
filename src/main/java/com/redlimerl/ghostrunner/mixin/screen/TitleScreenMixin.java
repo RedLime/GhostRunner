@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.mixin.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.gui.screen.GhostListScreen;
 import com.redlimerl.ghostrunner.util.Utils;
 import net.minecraft.client.gui.screen.Screen;

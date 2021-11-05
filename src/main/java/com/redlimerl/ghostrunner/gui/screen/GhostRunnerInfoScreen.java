@@ -6,8 +6,6 @@ import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.data.UpdateStatus.Status;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.BackgroundHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;

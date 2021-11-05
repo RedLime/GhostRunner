@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.gui.widget.GhostListWidget;
 import com.redlimerl.ghostrunner.record.data.GhostData;
