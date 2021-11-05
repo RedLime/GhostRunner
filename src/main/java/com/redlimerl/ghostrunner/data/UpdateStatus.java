@@ -5,11 +5,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.gui.GenericToast;
+import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
-import net.fabricmc.loader.api.SemanticVersion;
-import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.impl.util.version.VersionParser;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.item.ItemStack;
@@ -46,17 +43,17 @@ public class UpdateStatus {
                 if (jsonElement.getAsJsonArray().size() == 0) {
                     this.status = Status.UNKNOWN;
                 } else {
-                    SemanticVersion version = VersionParser.parseSemantic(GhostRunner.MOD_VERSION);
+                    GhostRunner.debug(GhostRunner.MOD_VERSION);
                     for (JsonElement element : jsonElement.getAsJsonArray()) {
                         JsonObject versionData = element.getAsJsonObject();
-                        Version target = Version.parse(versionData.get("tag_name").getAsString());
-                        if (version.compareTo(target) < 0 && !versionData.get("prerelease").getAsBoolean()) {
+                        String target = versionData.get("tag_name").getAsString();
+                        if (Utils.compareVersion(GhostRunner.MOD_VERSION, target) < 0 && !versionData.get("prerelease").getAsBoolean()) {
                             for (JsonElement asset : versionData.get("assets").getAsJsonArray()) {
                                 JsonObject assetData = asset.getAsJsonObject();
                                 if (assetData.get("name").getAsString().endsWith(GhostRunner.CLIENT_VERSION + ".jar")) {
                                     this.status = Status.OUTDATED;
                                     this.downloadUrl = assetData.get("browser_download_url").getAsString();
-                                    this.lastVersion = target.getFriendlyString();
+                                    this.lastVersion = target;
                                     break;
                                 }
                             }
@@ -67,7 +64,7 @@ public class UpdateStatus {
                         this.status = Status.UPDATED;
                     }
                 }
-            } catch (IOException | VersionParsingException e) {
+            } catch (IOException e) {
                 this.status = Status.UNKNOWN;
             }
         }).start();
