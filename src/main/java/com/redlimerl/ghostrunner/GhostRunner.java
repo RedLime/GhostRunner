@@ -18,6 +18,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
@@ -99,9 +100,13 @@ public class GhostRunner implements ClientModInitializer {
             }
         });
 
-        UPDATE_STATUS.check();
-
         SpeedRunOptions.addOptionButton(screen -> new OpacitySliderWidget());
+        SpeedRunOptions.addOptionButton(screen ->
+                        new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.option.toggle_point_notification").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE) ? ScreenTexts.ON : ScreenTexts.OFF), button -> {
+                            SpeedRunOptions.setOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE, !SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE));
+                            button.setMessage(new TranslatableText("ghostrunner.option.toggle_point_notification").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE) ? ScreenTexts.ON : ScreenTexts.OFF));
+                        })
+                , new TranslatableText("ghostrunner.option.toggle_point_notification.context"));
         SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
@@ -109,7 +114,7 @@ public class GhostRunner implements ClientModInitializer {
                 })
         );
         SpeedRunOptions.addOptionButton(screen ->
-                new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
+                new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.info"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client != null) client.openScreen(new GhostRunnerInfoScreen(screen));
                 })

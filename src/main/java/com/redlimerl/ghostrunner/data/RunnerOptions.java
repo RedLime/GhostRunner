@@ -56,4 +56,16 @@ public class RunnerOptions {
             return Boolean.toString(aBoolean);
         }
     };
+
+    public static final OptionArgument<Boolean> TOGGLE_CHECKPOINT_MESSAGE = new OptionArgument<Boolean>(new Identifier(GhostRunner.MOD_ID, "toggle_checkpoint_message"), true) {
+        @Override
+        public Boolean valueFromString(String s) {
+            return Boolean.valueOf(s);
+        }
+
+        @Override
+        public String valueToString(Boolean aBoolean) {
+            return Boolean.toString(aBoolean);
+        }
+    };
 }

@@ -1,9 +1,11 @@
 package com.redlimerl.ghostrunner.record;
 
 import com.redlimerl.ghostrunner.GhostRunner;
+import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.entity.GhostEntity;
 import com.redlimerl.ghostrunner.record.data.Timeline;
 import com.redlimerl.ghostrunner.util.Utils;
+import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -26,14 +28,8 @@ public class ReplayGhost {
     public static void addPlayerSkin(UUID uuid, Identifier id) {
         skins.put(uuid, id);
     }
-    public static void getPlayerSkin(UUID uuid) {
-        skins.getOrDefault(uuid, DefaultSkinHelper.getTexture());
-    }
-
-    //인게임 고스트 엔티티 목록
-    private static final HashMap<GhostInfo, GhostEntity> ghosts = new HashMap<>();
-    public static void clearAllGhosts() {
-        ghosts.clear();
+    public static Identifier getPlayerSkin(UUID uuid) {
+        return skins.getOrDefault(uuid, DefaultSkinHelper.getTexture());
     }
 
     //선택한 고스트 목록
@@ -59,12 +55,13 @@ public class ReplayGhost {
         }
     }
 
+    //체크 포인트 메세지
     public static void sendBestCheckPointMessage(Timeline.Moment moment) {
-        //if (!Options.getCheckPointToggle()) return;
+        if (!SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE)) return;
 
         long bestTime = 0;
-        for (GhostInfo ghostInfo : ghosts.keySet()) {
-            long time = ghostInfo.getCheckPoint(moment);
+        for (ReplayGhost replayGhost : ghostList) {
+            long time = replayGhost.ghostInfo.getCheckPoint(moment);
             if (time != 0 && (bestTime == 0 || bestTime > time)) {
                 bestTime = time;
             }
@@ -91,71 +88,88 @@ public class ReplayGhost {
         }
     }
 
+    private static final ArrayList<ReplayGhost> ghostList = new ArrayList<>();
+
     public static void insertBrains(Long seed) {
-        clearAllGhosts();
+        ghostList.clear();
 
         if (!selectedGhosts.containsKey(seed) || selectedGhosts.get(seed).isEmpty()) {
             return;
         }
 
         for (UUID uuid : selectedGhosts.get(seed)) {
-            GhostInfo ghostData = GhostInfo.fromData(uuid);
-            if (ghostData.getGhostData().getSeed() == seed && Objects.equals(ghostData.getGhostData().getClientVersion(), GhostRunner.CLIENT_VERSION)) {
-                ghosts.put(ghostData, null);
-                Utils.downloadPlayerSkin(ghostData.getGhostData().getGhostUserUuid());
+            GhostInfo ghostInfo = GhostInfo.fromData(uuid);
+            if (ghostInfo.getGhostData().getSeed() == seed && Objects.equals(ghostInfo.getGhostData().getClientVersion(), GhostRunner.CLIENT_VERSION)) {
+                ghostList.add(new ReplayGhost(ghostInfo));
+                Utils.downloadPlayerSkin(ghostInfo.getGhostData().getGhostUserUuid());
             }
         }
     }
 
     public static void tickGhost() {
-        if (ghosts.isEmpty()) return;
+        if (ghostList.isEmpty()) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
 
         if (client.player == null || client.player.clientWorld == null) return;
-        ClientWorld world = client.player.clientWorld;
+        ClientWorld playerWorld = client.player.clientWorld;
 
-        ghosts.forEach((ghostInfo, ghostEntity) -> {
-            PlayerLog playerLog = ghostInfo.pollPlayerLog();
+        for (ReplayGhost replay : ghostList) {
+            PlayerLog playerLog = replay.ghostInfo.pollPlayerLog();
             if (playerLog == null) {
-                if (ghostEntity != null) ghostEntity.remove();
-                ghosts.put(ghostInfo, null);
-            } else {
-                playerLog.world = playerLog.world != null ? playerLog.world : ghostEntity != null ? ghostEntity.world.getRegistryKey().getValue() : null;
-                if (ghostEntity == null) {
-                    GhostEntity ghost = summon(world, ghostInfo.getGhostData().getGhostUserUuid(), playerLog);
-                    ghost.setInvisible(true);
-                    ghosts.put(ghostInfo, ghost);
-                } else {
-                    if (ghostEntity.world.getDimension() != world.getDimension()) {
-                        ghostEntity.remove();
-                        ghosts.put(ghostInfo, summon(world, ghostInfo.getGhostData().getGhostUserUuid(), playerLog));
-                    } else {
-                        if (playerLog.world != world.getRegistryKey().getValue()) {
-                            ghostEntity.setInvisible(true);
-                        } else {
-                            ghostEntity.setInvisible(false);
-                            ghostEntity.updateTrackedPositionAndAngles(
-                                    playerLog.x == null ? ghostEntity.getX() : playerLog.x,
-                                    playerLog.y == null ? ghostEntity.getY() : playerLog.y,
-                                    playerLog.z == null ? ghostEntity.getZ() : playerLog.z,
-                                    playerLog.yaw == null ? ghostEntity.yaw : playerLog.yaw,
-                                    playerLog.pitch == null ? ghostEntity.pitch : playerLog.pitch, 1, true);
-                            ghostEntity.setHeadYaw(playerLog.yaw == null ? ghostEntity.yaw : playerLog.yaw);
-                            if (playerLog.pose != null) ghostEntity.setPose(playerLog.pose);
-                        }
-                    }
-                }
+                replay.remove();
+                continue;
             }
-        });
+
+            if (playerLog.world != null && replay.lastWorld != playerLog.world) replay.lastWorld = playerLog.world;
+
+            if (replay.ghost == null) {
+                if (!Objects.equals(replay.lastWorld.toString(), playerWorld.getRegistryKey().getValue().toString())) {
+                    continue;
+                }
+                replay.summon(playerWorld, playerLog);
+            }
+
+            if (!Objects.equals(replay.lastWorld.toString(), playerWorld.getRegistryKey().getValue().toString())
+                    || !Objects.equals(replay.ghost.world.getRegistryKey().getValue().toString(), playerWorld.getRegistryKey().getValue().toString())) {
+                replay.remove();
+                continue;
+            }
+
+            replay.ghost.updateTrackedPositionAndAngles(
+                    playerLog.x == null ? replay.ghost.getX() : playerLog.x,
+                    playerLog.y == null ? replay.ghost.getY() : playerLog.y,
+                    playerLog.z == null ? replay.ghost.getZ() : playerLog.z,
+                    playerLog.yaw == null ? replay.ghost.yaw : playerLog.yaw,
+                    playerLog.pitch == null ? replay.ghost.pitch : playerLog.pitch, 1, true);
+            replay.ghost.setHeadYaw(playerLog.yaw == null ? replay.ghost.yaw : playerLog.yaw);
+            if (playerLog.pose != null) replay.ghost.setPose(playerLog.pose);
+        }
     }
 
-    private static GhostEntity summon(ClientWorld world, UUID targetUUID, PlayerLog log) {
+
+    /* =================*/
+
+    private GhostEntity ghost = null;
+    private Identifier lastWorld = null;
+    private final GhostInfo ghostInfo;
+    protected ReplayGhost(GhostInfo ghostInfo) {
+        this.ghostInfo = ghostInfo;
+    }
+
+    private GhostEntity summon(ClientWorld world, PlayerLog log) {
         GhostEntity entity = new GhostEntity(GhostRunner.GHOST_ENTITY_TYPE, world);
         entity.refreshPositionAndAngles(log.x == null ? 0 : log.x, log.y == null ? 0 : log.y, log.z == null ? 0 : log.z, 0f, 0f);
-        entity.setTargetSkinUuid(targetUUID);
-        entity.setInvisible(true);
+        entity.setTargetSkinUuid(ghostInfo.getGhostData().getGhostUserUuid());
         world.addEntity(entity.getEntityId(), entity);
+        ghost = entity;
         return entity;
+    }
+
+    private void remove() {
+        if (ghost != null) {
+            ghost.remove();
+            ghost = null;
+        }
     }
 }

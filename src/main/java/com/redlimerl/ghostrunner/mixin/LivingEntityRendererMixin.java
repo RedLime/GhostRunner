@@ -7,7 +7,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -15,13 +14,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @SuppressWarnings("UnresolvedMixinReference")
 @Mixin(LivingEntityRenderer.class)
 public class LivingEntityRendererMixin {
-
-    // 가짜 플레이어 보조 옵션 렌더링
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isSpectator()Z"))
-    private boolean isSpectator(LivingEntity entity) {
-        return entity.isSpectator() && !(entity instanceof GhostEntity);
-    }
-
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
     private void injected(EntityModel<?> entityModel, MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
         if (entityModel instanceof GhostEntity.Model) {

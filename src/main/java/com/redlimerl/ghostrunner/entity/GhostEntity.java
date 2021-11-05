@@ -45,7 +45,7 @@ public class GhostEntity extends LivingEntity {
         @Override
         public Identifier getTexture(GhostEntity entity) {
             if (ghostSkins.containsKey(entity.uuid)) {
-                ReplayGhost.getPlayerSkin(ghostSkins.get(entity.uuid));
+                return ReplayGhost.getPlayerSkin(ghostSkins.get(entity.uuid));
             }
             return DefaultSkinHelper.getTexture();
         }
