@@ -128,6 +128,7 @@ public class GhostInfo {
             ghostData.setInGameTime(inGameTimer.getInGameTime());
             ghostData.setGhostCategory(inGameTimer.getCategory());
             ghostData.updateCreatedDate();
+            ghostData.setUseF3(GhostRunner.IS_USE_F3);
             ghostData.setGhostName(ghostData.getDefaultName());
             String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
 

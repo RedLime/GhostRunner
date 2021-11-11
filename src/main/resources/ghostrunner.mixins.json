@@ -6,6 +6,7 @@
   "mixins": [
     "ClientAdvancementManagerMixin",
     "ClientPlayerEntityMixin",
+    "KeyboardMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "screen.CreateWorldScreenMixin",

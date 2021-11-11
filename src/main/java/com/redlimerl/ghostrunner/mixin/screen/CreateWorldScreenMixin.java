@@ -67,7 +67,8 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/MoreOptionsDialog;render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V"))
     private void injected(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        drawStringWithShadow(matrices, this.textRenderer, I18n.translate("ghostrunner.world.is_fsg.description"), this.width / 2 + 5, 172, -6250336);
+        if (SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY)
+            drawStringWithShadow(matrices, this.textRenderer, I18n.translate("ghostrunner.world.is_fsg.description"), this.width / 2 + 5, 172, -6250336);
     }
 
     @Override
