@@ -158,7 +158,9 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
             MutableText timeContext = new LiteralText(" IGT: ").formatted(Formatting.GRAY)
                     .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getInGameTime())).formatted(Formatting.UNDERLINE).formatted(Formatting.YELLOW))
                     .append(new LiteralText(" / RTA: ").formatted(Formatting.GRAY))
-                    .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getRealTimeAttack())).formatted(Formatting.UNDERLINE).formatted(Formatting.LIGHT_PURPLE));
+                    .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getRealTimeAttack())).formatted(Formatting.UNDERLINE).formatted(Formatting.LIGHT_PURPLE))
+                    .append(new LiteralText(" / ").formatted(Formatting.GRAY))
+                    .append(new LiteralText(ghost.getGhostCategory().getCode().split("#")[1].replaceAll("_", " ")).formatted(Formatting.UNDERLINE).formatted(Formatting.AQUA));
             MutableText runnerContext = new TranslatableText("ghostrunner.context.by").append(": ")
                     .append(new LiteralText(ghost.getGhostUserName()).formatted(Formatting.UNDERLINE).formatted(Formatting.GRAY));
             MutableText modeContext = new LiteralText(" ")
