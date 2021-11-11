@@ -48,6 +48,7 @@
   "ghostrunner.message.failed_submit_record": "오류로 인하여 기록 제출을 실패했습니다.",
   "ghostrunner.message.not_need_seed_description": "설명란에 시드를 입력할 필요가 없습니다. (자동으로 기재됨)",
   "ghostrunner.message.submit.not_own_ghost": "본인의 고스트가 아니어서 신청할 수 없습니다.",
+  "ghostrunner.message.submit.not_support_category": "아직 제출을 지원하지 않는 카테고리입니다.",
   "ghostrunner.message.submit.already_submitted": "이미 신청된 고스트여서 신청할 수 없습니다.",
   "ghostrunner.message.update.found_new_update": "GhostRunner의\n새로운 업데이트가 발견되었습니다.",
   "ghostrunner.message.update.unknown": "최신 버전의 정보를 가져오는데 실패했습니다.",
@@ -76,5 +77,6 @@
   "ghostrunner.ghostdata.isf3": "F3를 사용했나요?",
   "ghostrunner.ghostdata.createddate": "고스트 생성 일자",
   "ghostrunner.ghostdata.ghostowner": "고스트의 주인",
-  "ghostrunner.ghostdata.issubmitted": "Speedrun.com에 등재했나요?"
+  "ghostrunner.ghostdata.issubmitted": "Speedrun.com에 등재했나요?",
+  "ghostrunner.ghostdata.category": "기록 카테고리"
 }

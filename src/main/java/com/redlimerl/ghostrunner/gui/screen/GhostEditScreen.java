@@ -4,6 +4,7 @@ import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.Utils;
+import com.redlimerl.ghostrunner.util.submit.SubmitData;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.BackgroundHelper;
@@ -28,6 +29,7 @@ public class GhostEditScreen extends Screen {
     private final boolean isOwnGhost;
     private final GhostListScreen parent;
     private boolean isChangedName = false;
+    private boolean isSupportCategory;
 
     public GhostEditScreen(GhostListScreen parent, GhostData ghost) {
         super(new TranslatableText("ghostrunner.title.edit_ghost"));
@@ -81,7 +83,8 @@ public class GhostEditScreen extends Screen {
                         client.openScreen(new GhostSubmitScreen(this, ghost));
                     }
                 } : (button) -> Util.getOperatingSystem().open(ghost.getRecordURL())));
-        this.submitButton.active = !ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost);
+        this.isSupportCategory = SubmitData.create(ghost, "something", "https://www.youtube.com/watch?v=dQw4w9WgXcQ") != null;
+        this.submitButton.active = (!ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost)) && this.isSupportCategory;
 
         addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));
     }
@@ -92,7 +95,9 @@ public class GhostEditScreen extends Screen {
 
         this.renderBackground(matrices);
 
-        if (!ghost.isSubmitted() && !isOwnGhost && ghost.getRecordURL().isEmpty()) {
+        if (!ghost.isSubmitted() && !this.isSupportCategory) {
+            drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_support_category"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
+        } else if (!ghost.isSubmitted() && !isOwnGhost && ghost.getRecordURL().isEmpty()) {
             drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_own_ghost"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
         }
         drawCenteredText(matrices, textRenderer, title, width / 2, 15, 16777215);

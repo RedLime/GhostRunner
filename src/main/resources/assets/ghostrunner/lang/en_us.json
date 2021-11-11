@@ -48,6 +48,7 @@
   "ghostrunner.message.failed_submit_record": "The record submit failed cause by an error.",
   "ghostrunner.message.not_need_seed_description": "You don't need to enter a seed in the description. (will be submitted automatically)",
   "ghostrunner.message.submit.not_own_ghost": "You can't submit it because it's not your Ghost.",
+  "ghostrunner.message.submit.not_support_category": "This Ghost's category doesn't support submit yet.",
   "ghostrunner.message.submit.already_submitted": "You can't submit it because it has already been submitted.",
   "ghostrunner.message.update.found_new_update": "A new update for\nGhostRunner has been found.",
   "ghostrunner.message.update.unknown": "Failed to get latest version of information.",
@@ -76,5 +77,6 @@
   "ghostrunner.ghostdata.isf3": "Was It used F3?",
   "ghostrunner.ghostdata.createddate": "Ghost Created Date",
   "ghostrunner.ghostdata.ghostowner": "Ghost's Owner",
-  "ghostrunner.ghostdata.issubmitted": "Is It Submitted on Speedrun.com?"
+  "ghostrunner.ghostdata.issubmitted": "Is It Submitted on Speedrun.com?",
+  "ghostrunner.ghostdata.category": "Run Category"
 }

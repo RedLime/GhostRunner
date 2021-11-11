@@ -28,7 +28,7 @@ public class MinecraftClientMixin {
         GhostRunner.IS_USE_F3 = false;
         GhostRunner.MINIMUM_DIFFICULTY = Difficulty.HARD;
 
-        GhostInfo.INSTANCE.setup(generatorOptions.getSeed());
+        GhostInfo.INSTANCE.setup(generatorOptions);
         ReplayGhost.insertBrains(generatorOptions.getSeed());
     }
 }

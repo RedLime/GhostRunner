@@ -6,10 +6,13 @@ import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.record.data.Timeline;
+import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.RunCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.world.gen.GeneratorOptions;
 import org.apache.commons.compress.utils.Charsets;
 import org.apache.commons.io.FileUtils;
 
@@ -29,11 +32,11 @@ public class GhostInfo {
     private static final InGameTimer inGameTimer = InGameTimer.INSTANCE;
     static {
         InGameTimer.onComplete(igt -> {
-            GhostRunner.IS_COMPLETED = true;
             MinecraftClient.getInstance().getToastManager().add(
                     new GenericToast("IGT: "+InGameTimer.timeToStringFormat(inGameTimer.getInGameTime()),
                             "RTA: "+InGameTimer.timeToStringFormat(inGameTimer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
+            INSTANCE.save();
         });
     }
 
@@ -86,12 +89,14 @@ public class GhostInfo {
         return stringBuilder.substring(0, stringBuilder.length()-1);
     }
 
-    public void setup(long seed) {
+    public void setup(GeneratorOptions generatorOptions) {
         this.clear();
-        currentGhostType = GhostRunner.optionalLong.isPresent() ? (GhostRunner.IS_FSG ? GhostType.FSG : GhostType.SSG) : GhostType.RSG;
-        ghostData = GhostData.create(seed, currentGhostType, GhostRunner.IS_HARDCORE);
+        currentGhostType = GhostRunner.OPTIONAL_LONG.isPresent()
+                ? (GhostRunner.IS_FSG && SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY ? GhostType.FSG : GhostType.SSG)
+                : GhostType.RSG;
+        ghostData = GhostData.create(generatorOptions, currentGhostType, GhostRunner.IS_HARDCORE);
 
-        GhostRunner.optionalLong = OptionalLong.empty();
+        GhostRunner.OPTIONAL_LONG = OptionalLong.empty();
     }
 
     public void clear() {
@@ -121,6 +126,7 @@ public class GhostInfo {
         new Thread(() -> {
             ghostData.setRealTimeAttack(inGameTimer.getRealTimeAttack());
             ghostData.setInGameTime(inGameTimer.getInGameTime());
+            ghostData.setGhostCategory(inGameTimer.getCategory());
             ghostData.updateCreatedDate();
             ghostData.setGhostName(ghostData.getDefaultName());
             String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
@@ -136,14 +142,5 @@ public class GhostInfo {
                 e.printStackTrace();
             }
         }).start();
-    }
-
-    @Override
-    public String toString() {
-        return "GhostInfo{" +
-                "logData=" + logData.size() +
-                ", timeline=" + timeline +
-                ", ghostData=" + ghostData +
-                '}';
     }
 }

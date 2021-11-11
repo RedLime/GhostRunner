@@ -14,23 +14,19 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 import java.util.Map;
 import java.util.Objects;
 
-@Mixin(ClientAdvancementManager.class)
+@Mixin(value = ClientAdvancementManager.class, priority = 999)
 public class ClientAdvancementManagerMixin {
 
-    @Shadow @Final private AdvancementManager manager;
-
-    @Redirect(method = "onAdvancements", at = @At(value = "INVOKE", target = "Ljava/util/Map$Entry;getValue()Ljava/lang/Object;"))
-    public Object advancement(Map.Entry<Identifier, AdvancementProgress> entry) {
-        Advancement advancement = this.manager.get(entry.getKey());
-        AdvancementProgress advancementProgress = entry.getValue();
-        assert advancement != null;
-        advancementProgress.init(advancement.getCriteria(), advancement.getRequirements());
-        if (advancementProgress.isDone() && InGameTimer.INSTANCE.getStatus() != TimerStatus.NONE) {
+    @ModifyArgs(method = "onAdvancements", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/AdvancementToast;<init>(Lnet/minecraft/advancement/Advancement;)V"))
+    public void advancement(Args args) {
+        Advancement advancement = args.get(0);
+        if (InGameTimer.INSTANCE.getStatus() != TimerStatus.NONE && InGameTimer.INSTANCE.getStatus() != TimerStatus.COMPLETED) {
             if (Objects.equals(advancement.getId(), new Identifier("story/enter_the_nether"))) {
                 if (GhostInfo.INSTANCE.setCheckPoint(Timeline.Moment.ENTER_NETHER))
                     ReplayGhost.sendBestCheckPointMessage(Timeline.Moment.ENTER_NETHER);
@@ -45,6 +41,5 @@ public class ClientAdvancementManagerMixin {
                     ReplayGhost.sendBestCheckPointMessage(Timeline.Moment.ENTER_THE_END);
             }
         }
-        return entry.getValue();
     }
 }

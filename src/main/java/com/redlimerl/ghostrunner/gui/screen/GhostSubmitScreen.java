@@ -1,10 +1,10 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.MCSpeedRunAPI;
-import com.redlimerl.ghostrunner.data.SubmitData;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.Utils;
+import com.redlimerl.ghostrunner.util.submit.SubmitData;
+import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -42,7 +42,8 @@ public class GhostSubmitScreen extends Screen {
                     client.openScreen(new GhostLoadingScreen(new TranslatableText("ghostrunner.message.submitting_record")));
                     new Thread(() -> {
                         try {
-                            String record = MCSpeedRunAPI.request(new SubmitData(ghostData, this.descriptionField.getText(), this.videoUrlField.getText()));
+                            @SuppressWarnings("ConstantConditions")
+                            String record = SubmitData.create(ghostData, this.descriptionField.getText(), this.videoUrlField.getText()).submit();
                             ghostData.setSubmitted(true);
                             ghostData.setRecordURL(record);
                             this.ghostData.update();
@@ -53,7 +54,7 @@ public class GhostSubmitScreen extends Screen {
                                     client.openScreen(parent);
                                 }
                             }, new TranslatableText("ghostrunner.title.success"), new TranslatableText("ghostrunner.message.submitted_record"), new TranslatableText("chat.link.open"), ScreenTexts.DONE)));
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             client.execute(() ->
                                     client.openScreen(
                                             new GhostErrorScreen(parent, new TranslatableText("selectWorld.recreate.error.title"), new TranslatableText("ghostrunner.message.failed_submit_record"))
@@ -90,6 +91,9 @@ public class GhostSubmitScreen extends Screen {
         this.renderBackground(matrices);
         drawCenteredText(matrices, textRenderer, title, width / 2, 30, 16777215);
         drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.not_need_seed_description"), width / 2, this.descriptionField.y + 28, 16777215);
+        drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.ghostdata.title").append(": ")
+                        .append(ghostData.getType().name() + " | " + ghostData.getGhostCategory().getCode().split("#")[1].replaceAll("_", " ") + " | " + InGameTimer.timeToStringFormat(ghostData.getInGameTime())),
+                width / 2, this.descriptionField.y + 40, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.description"), width / 2 - 100, this.descriptionField.y - 10, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.video_url"), width / 2 - 100, this.videoUrlField.y - 10, 16777215);
         descriptionField.render(matrices, mouseX, mouseY, delta);

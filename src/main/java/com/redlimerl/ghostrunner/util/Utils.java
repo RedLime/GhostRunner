@@ -59,6 +59,11 @@ public class Utils {
         return text.matches("^(http|https|ftp)://.*$");
     }
 
+    /**
+     * @param left compare version A
+     * @param right compare version B
+     * @return if left > right = 1 / if left == right = 0 / if left < right = -1
+     */
     public static int compareVersion(@NotNull String left, @NotNull String right) {
         if (left.equals(right)) {
             return 0;

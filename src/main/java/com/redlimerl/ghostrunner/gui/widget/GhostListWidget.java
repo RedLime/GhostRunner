@@ -6,6 +6,7 @@ import com.redlimerl.ghostrunner.gui.screen.GhostListScreen;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
+import com.redlimerl.ghostrunner.util.TarGzUtil;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -72,7 +73,24 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
                     try {
                         GhostData record = GhostData.loadData(file.toPath());
                         list.add(record);
-                    } catch (Exception ignored) {}
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        new Thread(() -> {
+                            int i = 0;
+                            if (GhostRunner.GHOST_OLD_PATH.resolve("old_" + file.getName() + ".mcg").toFile().exists()) {
+                                i++;
+                                while (GhostRunner.GHOST_OLD_PATH.resolve("old_" + file.getName() + "_" + i + ".mcg").toFile().exists()) {
+                                    i++;
+                                }
+                            }
+                            try {
+                                TarGzUtil.createTarGzipFolder(file.toPath(), GhostRunner.GHOST_OLD_PATH.resolve("old_" + file.getName() + (i > 0 ? "_"+i : "") + ".mcg"));
+                                FileUtils.deleteDirectory(file);
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        }).start();
+                    }
                 }
             }
             ghosts = list;

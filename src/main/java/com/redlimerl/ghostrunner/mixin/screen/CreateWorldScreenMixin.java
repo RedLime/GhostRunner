@@ -2,6 +2,8 @@ package com.redlimerl.ghostrunner.mixin.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.gui.screen.GhostSelectScreen;
+import com.redlimerl.speedrunigt.option.SpeedRunOptions;
+import com.redlimerl.speedrunigt.timer.RunCategory;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
@@ -42,8 +44,8 @@ public abstract class CreateWorldScreenMixin extends Screen {
         this.fsgButton.visible = false;
 
         this.ghostButton = addButton(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
-            if (this.client != null && GhostRunner.optionalLong.isPresent()) {
-                this.client.openScreen(new GhostSelectScreen(this, GhostRunner.optionalLong.getAsLong()));
+            if (this.client != null && GhostRunner.OPTIONAL_LONG.isPresent()) {
+                this.client.openScreen(new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()));
             }
         }));
         this.ghostButton.visible = false;
@@ -51,14 +53,16 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "setMoreOptionsOpen(Z)V", at = @At("HEAD"))
     private void moreOption(boolean b, CallbackInfo ci) {
-        this.fsgButton.visible = b;
-        this.ghostButton.visible = b && GhostRunner.optionalLong.isPresent();
+        if (SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY) {
+            this.fsgButton.visible = b;
+        }
+        this.ghostButton.visible = b && GhostRunner.OPTIONAL_LONG.isPresent();
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tick(CallbackInfo ci) {
         GhostRunner.IS_HARDCORE = this.hardcore;
-        this.ghostButton.visible = GhostRunner.optionalLong.isPresent();
+        this.ghostButton.visible = GhostRunner.OPTIONAL_LONG.isPresent();
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/MoreOptionsDialog;render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V"))

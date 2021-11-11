@@ -17,7 +17,7 @@ public abstract class MoreOptionsDialogMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void getSeed(CallbackInfo ci) {
-        GhostRunner.optionalLong = tryParseLong2(seedText);
+        GhostRunner.OPTIONAL_LONG = tryParseLong2(seedText);
     }
 
     private static OptionalLong tryParseLong2(String string) {

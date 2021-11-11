@@ -43,7 +43,6 @@ public class UpdateStatus {
                 if (jsonElement.getAsJsonArray().size() == 0) {
                     this.status = Status.UNKNOWN;
                 } else {
-                    GhostRunner.debug(GhostRunner.MOD_VERSION);
                     for (JsonElement element : jsonElement.getAsJsonArray()) {
                         JsonObject versionData = element.getAsJsonObject();
                         String target = versionData.get("tag_name").getAsString();

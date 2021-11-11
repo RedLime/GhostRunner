@@ -9,7 +9,6 @@
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "screen.CreateWorldScreenMixin",
-    "screen.CreditsScreenMixin",
     "screen.MoreOptionsDialogMixin",
     "screen.TitleScreenMixin"
   ],

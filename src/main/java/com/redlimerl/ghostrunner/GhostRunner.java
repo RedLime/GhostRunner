@@ -49,18 +49,18 @@ public class GhostRunner implements ClientModInitializer {
     public static final Path GHOSTS_PATH = MAIN_PATH.resolve("ghosts");
     public static final Path GHOST_SHARE_PATH = MAIN_PATH.resolve("shares");
     public static final Path GHOST_TEMP_PATH = MAIN_PATH.resolve("temp");
+    public static final Path GHOST_OLD_PATH = MAIN_PATH.resolve("old_ghosts");
 
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static String MOD_VERSION;
     public static final String CLIENT_VERSION = SharedConstants.getGameVersion().getName();
-    public static final int GHOST_VERSION = 3;
+    public static final int GHOST_VERSION = 4;
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    public static OptionalLong optionalLong = OptionalLong.empty();
+    public static OptionalLong OPTIONAL_LONG = OptionalLong.empty();
     public static boolean IS_FSG = false;
     public static boolean IS_HARDCORE = false;
     public static boolean IS_USE_F3 = false;
-    public static boolean IS_COMPLETED = false;
     public static Difficulty MINIMUM_DIFFICULTY = Difficulty.HARD;
 
     public static final UpdateStatus UPDATE_STATUS = new UpdateStatus();
@@ -73,6 +73,7 @@ public class GhostRunner implements ClientModInitializer {
         GHOSTS_PATH.toFile().mkdirs();
         GHOST_SHARE_PATH.toFile().mkdirs();
         GHOST_TEMP_PATH.toFile().mkdirs();
+        GHOST_OLD_PATH.toFile().mkdirs();
     }
 
     public static final EntityType<GhostEntity> GHOST_ENTITY_TYPE = Registry.register(

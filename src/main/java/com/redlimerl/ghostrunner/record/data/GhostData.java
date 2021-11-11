@@ -2,8 +2,10 @@ package com.redlimerl.ghostrunner.record.data;
 
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.RunCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.gen.GeneratorOptions;
 import org.apache.commons.compress.utils.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -37,7 +39,9 @@ public class GhostData {
     private final String key;
     private boolean isSubmitted;
     private boolean isUseF3;
+    private final boolean shouldGenerateStructures;
     private String difficulty;
+    private String ghostCategory;
     private String recordURL;
 
     public static GhostData loadData(Path path) {
@@ -54,12 +58,12 @@ public class GhostData {
         }
 
         //For old ghost checking
-        if (result.ghostVersion < 3) throw new IllegalArgumentException("Old ghost file, you cannot use this ghost.");
+        if (result.ghostVersion < GHOST_VERSION) throw new IllegalArgumentException("Old ghost file, you cannot use this ghost.");
 
         return result;
     }
 
-    public static GhostData create(long seed, GhostType ghostType, boolean isHardcore) {
+    public static GhostData create(GeneratorOptions generatorOptions, GhostType ghostType, boolean isHardcore) {
         return new GhostData(
                 UUID.randomUUID(),
                 MOD_VERSION,
@@ -69,7 +73,7 @@ public class GhostData {
                 Utils.UUIDFromString(MinecraftClient.getInstance().getSession().getUuid()),
                 MinecraftClient.getInstance().getSession().getUsername(),
                 ghostType.getId() + (isHardcore ? 1 : 0),
-                seed,
+                generatorOptions.getSeed(),
                 0,
                 0,
                 Instant.now().toString(),
@@ -77,12 +81,15 @@ public class GhostData {
                 false,
                 false,
                 Difficulty.EASY.getName(),
-                ""
+                "",
+                RunCategory.ANY.name(),
+                generatorOptions.shouldGenerateStructures()
         );
     }
 
     public GhostData(UUID uuid, String modVersion, String clientVersion, int ghostVersion, String ghostName, UUID ghostUserUuid, String ghostUserName,
-                     int ghostType, long seed, long realTimeAttack, long inGameTime, String createdDate, String key, boolean isSubmitted, boolean isUseF3, String difficulty, String recordURL) {
+                     int ghostType, long seed, long realTimeAttack, long inGameTime, String createdDate, String key, boolean isSubmitted,
+                     boolean isUseF3, String difficulty, String recordURL, String ghostCategory, boolean shouldGenerateStructures) {
         this.uuid = uuid;
         this.modVersion = modVersion;
         this.clientVersion = clientVersion;
@@ -100,6 +107,8 @@ public class GhostData {
         this.isUseF3 = isUseF3;
         this.difficulty = difficulty;
         this.recordURL = recordURL;
+        this.ghostCategory = ghostCategory;
+        this.shouldGenerateStructures = shouldGenerateStructures;
     }
 
     @Override
@@ -150,6 +159,10 @@ public class GhostData {
         return ghostType % 2 == 1;
     }
 
+    public boolean isGenerateStructures() {
+        return shouldGenerateStructures;
+    }
+
     public long getSeed() {
         return seed;
     }
@@ -196,6 +209,14 @@ public class GhostData {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty.getName();
+    }
+
+    public void setGhostCategory(RunCategory ghostCategory) {
+        this.ghostCategory = ghostCategory.name();
+    }
+
+    public RunCategory getGhostCategory() {
+        return RunCategory.valueOf(ghostCategory);
     }
 
     public boolean isUseF3() {
