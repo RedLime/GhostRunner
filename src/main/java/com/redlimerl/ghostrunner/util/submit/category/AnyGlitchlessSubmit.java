@@ -5,7 +5,6 @@ import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.util.submit.SubmitData;
 import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 import com.redlimerl.ghostrunner.util.submit.SubmitVersionGroup;
-import com.redlimerl.speedrunigt.timer.RunCategory;
 import net.minecraft.world.Difficulty;
 
 import java.util.ArrayList;

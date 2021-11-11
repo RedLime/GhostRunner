@@ -2,13 +2,7 @@ package com.redlimerl.ghostrunner.util.submit.category;
 
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
-import com.redlimerl.ghostrunner.util.submit.SubmitData;
 import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
-import com.redlimerl.ghostrunner.util.submit.SubmitVersionGroup;
-import com.redlimerl.speedrunigt.timer.RunCategory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HighPercentSubmit extends ExtensionCategorySubmit {
 

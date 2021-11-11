@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.util.submit.category;
 
 import com.redlimerl.ghostrunner.record.data.GhostData;
-import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class EnterEndSubmit extends ExtensionCategorySubmit {

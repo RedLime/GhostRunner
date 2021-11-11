@@ -16,8 +16,6 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 
-import java.io.IOException;
-
 public class GhostSubmitScreen extends Screen {
 
     private final Screen parent;
