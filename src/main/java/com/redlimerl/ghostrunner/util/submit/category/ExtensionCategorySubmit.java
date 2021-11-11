@@ -22,7 +22,7 @@ public abstract class ExtensionCategorySubmit extends SubmitData {
 
     @Override
     public SubmitVariable getF3Variable() {
-        return new SubmitVariable("ylqkjo3l", this.getGhostData().isUseF3() ? "zqorkv5q" : "81w5z0m1");
+        return new SubmitVariable("ylqkjo3l", this.getGhostData().isUseF3() ? "81w5z0m1" : "zqorkv5q");
     }
 
     @Override
