@@ -8,7 +8,9 @@ import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import com.redlimerl.speedrunigt.timer.TimerStatus;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -20,12 +22,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayerEntity.class)
-public abstract class ClientPlayerEntityMixin extends PlayerEntity {
+public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
 
     @Shadow @Final protected MinecraftClient client;
 
-    public ClientPlayerEntityMixin(World world, BlockPos blockPos, GameProfile gameProfile) {
-        super(world, blockPos, gameProfile);
+    public ClientPlayerEntityMixin(ClientWorld world, GameProfile profile) {
+        super(world, profile);
     }
 
     @Inject(method = "tick()V", at = @At("TAIL"))

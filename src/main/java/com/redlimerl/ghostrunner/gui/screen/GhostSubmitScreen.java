@@ -34,7 +34,7 @@ public class GhostSubmitScreen extends Screen {
     protected void init() {
         assert client != null;
 
-        client.keyboard.enableRepeatEvents(true);
+        client.keyboard.setRepeatEvents(true);
         this.submitButton = addButton(new ButtonWidget(width / 2 - 100, height - 65, 200, 20, ScreenTexts.PROCEED,
                 (button) -> {
                     client.openScreen(new GhostLoadingScreen(new TranslatableText("ghostrunner.message.submitting_record")));
@@ -112,6 +112,6 @@ public class GhostSubmitScreen extends Screen {
 
     @Override
     public void removed() {
-        if (client != null) client.keyboard.enableRepeatEvents(false);
+        if (client != null) client.keyboard.setRepeatEvents(false);
     }
 }

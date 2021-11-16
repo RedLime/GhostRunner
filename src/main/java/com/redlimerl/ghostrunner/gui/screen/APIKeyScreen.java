@@ -28,7 +28,7 @@ public class APIKeyScreen extends Screen {
     @Override
     protected void init() {
         assert client != null;
-        client.keyboard.enableRepeatEvents(true);
+        client.keyboard.setRepeatEvents(true);
 
         this.saveButton = addButton(new ButtonWidget(width / 2 - 100, height / 4 + 32, 98, 20, new TranslatableText("selectWorld.edit.save"),
                 (button) -> {
@@ -91,6 +91,6 @@ public class APIKeyScreen extends Screen {
 
     @Override
     public void removed() {
-        if (client != null) client.keyboard.enableRepeatEvents(false);
+        if (client != null) client.keyboard.setRepeatEvents(false);
     }
 }

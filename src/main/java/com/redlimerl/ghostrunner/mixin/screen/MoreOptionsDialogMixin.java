@@ -2,6 +2,7 @@ package com.redlimerl.ghostrunner.mixin.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
 import net.minecraft.client.gui.screen.world.MoreOptionsDialog;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,11 +14,11 @@ import java.util.OptionalLong;
 @Mixin(MoreOptionsDialog.class)
 public abstract class MoreOptionsDialogMixin {
 
-    @Shadow private String seedText;
+    @Shadow private TextFieldWidget seedTextField;
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void getSeed(CallbackInfo ci) {
-        GhostRunner.OPTIONAL_LONG = tryParseLong2(seedText);
+        GhostRunner.OPTIONAL_LONG = tryParseLong2(this.seedTextField.getText());
     }
 
     private static OptionalLong tryParseLong2(String string) {

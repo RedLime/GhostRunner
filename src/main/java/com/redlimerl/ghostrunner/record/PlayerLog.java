@@ -51,7 +51,7 @@ public class PlayerLog {
 
     public PlayerLog(PlayerEntity player) {
         this.pose = player.getPose();
-        this.world = player.world.getDimensionRegistryKey().getValue();
+        this.world = player.world.getRegistryKey().getValue();
         this.x = player.getX();
         this.y = player.getY();
         this.z = player.getZ();
