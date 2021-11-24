@@ -22,12 +22,14 @@ import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -36,7 +38,10 @@ import net.minecraft.world.Difficulty;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalLong;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
 public class GhostRunner implements ClientModInitializer {
@@ -54,13 +59,15 @@ public class GhostRunner implements ClientModInitializer {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static String MOD_VERSION;
     public static final String CLIENT_VERSION = SharedConstants.getGameVersion().getName();
-    public static final int GHOST_VERSION = 4;
+    public static final int GHOST_VERSION = 5;
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public static OptionalLong OPTIONAL_LONG = OptionalLong.empty();
     public static boolean IS_FSG = false;
     public static boolean IS_HARDCORE = false;
     public static boolean IS_USE_F3 = false;
+    public static boolean IS_USE_GHOST = false;
+    public static boolean IS_SHOW_USE_GHOST_WARN = false;
     public static Difficulty MINIMUM_DIFFICULTY = Difficulty.HARD;
 
     public static final UpdateStatus UPDATE_STATUS = new UpdateStatus();
@@ -109,6 +116,12 @@ public class GhostRunner implements ClientModInitializer {
                         })
                 , new TranslatableText("ghostrunner.option.toggle_point_notification.context"));
         SpeedRunOptions.addOptionButton(screen ->
+                        new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) ? ScreenTexts.ON : ScreenTexts.OFF), button -> {
+                            SpeedRunOptions.setOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG, !SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG));
+                            button.setMessage(new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) ? ScreenTexts.ON : ScreenTexts.OFF));
+                        })
+                , new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode.context"));
+        SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client != null) client.openScreen(new APIKeyScreen(bool -> client.openScreen(screen)));
@@ -124,8 +137,13 @@ public class GhostRunner implements ClientModInitializer {
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
+
+                    debug(new TranslatableText("ghostrunner.option.toggle_point_notification.context").getString());
+                    debug(new LiteralText("ghostrunner.option.toggle_point_notification.context").getString());
                 })
         );
+        debug(new TranslatableText("ghostrunner.option.toggle_point_notification.context").getString());
+        debug(new LiteralText("ghostrunner.option.toggle_point_notification.context").getString());
     }
 
     public static void debug(Object obj) {

@@ -36,6 +36,10 @@ public class GhostInfo {
                     new GenericToast("IGT: "+InGameTimer.timeToStringFormat(inGameTimer.getInGameTime()),
                             "RTA: "+InGameTimer.timeToStringFormat(inGameTimer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
+            MinecraftClient.getInstance().getToastManager().add(
+                    new GenericToast(inGameTimer.getCategory().getCode().split("#")[1].replaceAll("_", " ") + " / " + currentGhostType.name(),
+                            "S: "+INSTANCE.ghostData.getSeed(), null)
+            );
             INSTANCE.save();
         });
     }
@@ -129,6 +133,7 @@ public class GhostInfo {
             ghostData.setGhostCategory(inGameTimer.getCategory());
             ghostData.updateCreatedDate();
             ghostData.setUseF3(GhostRunner.IS_USE_F3);
+            ghostData.setSubmittable(!GhostRunner.IS_USE_GHOST);
             ghostData.setGhostName(ghostData.getDefaultName());
             String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
 

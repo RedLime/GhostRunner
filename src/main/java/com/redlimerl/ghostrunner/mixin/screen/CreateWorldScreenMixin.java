@@ -1,9 +1,11 @@
 package com.redlimerl.ghostrunner.mixin.screen;
 
 import com.redlimerl.ghostrunner.GhostRunner;
+import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.gui.screen.GhostSelectScreen;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.RunCategory;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.world.CreateWorldScreen;
@@ -14,6 +16,7 @@ import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,7 +48,15 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
         this.ghostButton = addButton(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null && GhostRunner.OPTIONAL_LONG.isPresent()) {
-                this.client.openScreen(new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()));
+                if (!GhostRunner.IS_SHOW_USE_GHOST_WARN) {
+                    this.client.openScreen(new ConfirmScreen(bool -> {
+                        this.client.openScreen(bool ? new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()) : this);
+                        GhostRunner.IS_SHOW_USE_GHOST_WARN = bool;
+                    }, new TranslatableText("createWorld.customize.custom.confirmTitle").formatted(Formatting.RED, Formatting.BOLD),
+                            new TranslatableText("ghostrunner.message.not_submittable_with_ghosts").formatted(Formatting.YELLOW)));
+                } else {
+                    this.client.openScreen(new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()));
+                }
             }
         }));
         this.ghostButton.visible = false;
@@ -74,7 +85,7 @@ public abstract class CreateWorldScreenMixin extends Screen {
     @Override
     public boolean changeFocus(boolean lookForwards) {
         boolean result = super.changeFocus(lookForwards);
-        while (getFocused() == this.fsgButton || getFocused() == this.ghostButton) {
+        while ((!SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) && getFocused() == this.fsgButton) || getFocused() == this.ghostButton) {
             result = super.changeFocus(lookForwards);
         }
         return result;

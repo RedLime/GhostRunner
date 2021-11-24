@@ -37,6 +37,7 @@ public class GhostData {
     private long inGameTime;
     private String createdDate;
     private final String key;
+    private boolean isSubmittable;
     private boolean isSubmitted;
     private boolean isUseF3;
     private final boolean shouldGenerateStructures;
@@ -83,13 +84,14 @@ public class GhostData {
                 Difficulty.EASY.getName(),
                 "",
                 RunCategory.ANY.name(),
-                generatorOptions.shouldGenerateStructures()
+                generatorOptions.shouldGenerateStructures(),
+                true
         );
     }
 
     public GhostData(UUID uuid, String modVersion, String clientVersion, int ghostVersion, String ghostName, UUID ghostUserUuid, String ghostUserName,
                      int ghostType, long seed, long realTimeAttack, long inGameTime, String createdDate, String key, boolean isSubmitted,
-                     boolean isUseF3, String difficulty, String recordURL, String ghostCategory, boolean shouldGenerateStructures) {
+                     boolean isUseF3, String difficulty, String recordURL, String ghostCategory, boolean shouldGenerateStructures, boolean isSubmittable) {
         this.uuid = uuid;
         this.modVersion = modVersion;
         this.clientVersion = clientVersion;
@@ -109,6 +111,7 @@ public class GhostData {
         this.recordURL = recordURL;
         this.ghostCategory = ghostCategory;
         this.shouldGenerateStructures = shouldGenerateStructures;
+        this.isSubmittable = isSubmittable;
     }
 
     @Override
@@ -154,7 +157,15 @@ public class GhostData {
         }
         return GhostType.RSG;
     }
-    
+
+    public boolean isSubmittable() {
+        return isSubmittable;
+    }
+
+    public void setSubmittable(boolean submittable) {
+        isSubmittable = submittable;
+    }
+
     public boolean isHardcore() {
         return ghostType % 2 == 1;
     }

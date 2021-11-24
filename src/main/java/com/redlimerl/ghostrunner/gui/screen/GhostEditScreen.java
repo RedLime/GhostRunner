@@ -84,7 +84,7 @@ public class GhostEditScreen extends Screen {
                     }
                 } : (button) -> Util.getOperatingSystem().open(ghost.getRecordURL())));
         this.isSupportCategory = SubmitData.create(ghost, "something", "https://www.youtube.com/watch?v=dQw4w9WgXcQ") != null;
-        this.submitButton.active = (!ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost)) && this.isSupportCategory;
+        this.submitButton.active = (!ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost)) && this.isSupportCategory && ghost.isSubmittable();
 
         addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));
     }
@@ -95,10 +95,14 @@ public class GhostEditScreen extends Screen {
 
         this.renderBackground(matrices);
 
-        if (!ghost.isSubmitted() && !this.isSupportCategory) {
-            drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_support_category"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
-        } else if (!ghost.isSubmitted() && !isOwnGhost && ghost.getRecordURL().isEmpty()) {
-            drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_own_ghost"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
+        if (!ghost.isSubmitted()) {
+            if (!isOwnGhost && ghost.getRecordURL().isEmpty()) {
+                drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_own_ghost"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
+            } else if (!this.isSupportCategory) {
+                drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_support_category"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
+            } else if (!ghost.isSubmittable()) {
+                drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.submit.not_submittable_ghost"), width / 2, submitButton.y + 25, BackgroundHelper.ColorMixer.getArgb(255, 255, 80, 80));
+            }
         }
         drawCenteredText(matrices, textRenderer, title, width / 2, 15, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.ghost_name"), width / 2 - 100, yPos - 14, 16777215);

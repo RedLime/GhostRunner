@@ -157,13 +157,12 @@ public class ReplayGhost {
         this.ghostInfo = ghostInfo;
     }
 
-    private GhostEntity summon(ClientWorld world, PlayerLog log) {
+    private void summon(ClientWorld world, PlayerLog log) {
         GhostEntity entity = new GhostEntity(GhostRunner.GHOST_ENTITY_TYPE, world);
         entity.refreshPositionAndAngles(log.x == null ? 0 : log.x, log.y == null ? 0 : log.y, log.z == null ? 0 : log.z, 0f, 0f);
         entity.setTargetSkinUuid(ghostInfo.getGhostData().getGhostUserUuid());
         world.addEntity(entity.getEntityId(), entity);
         ghost = entity;
-        return entity;
     }
 
     private void remove() {
