@@ -26,7 +26,7 @@ public abstract class SubmitData {
         if (ghostData.getGhostCategory() == RunCategory.ANY) {
             if (ghostData.getType() == GhostType.FSG)
                 return new FSGlitchlessSubmit(ghostData, description, videoUrl);
-            else return new AnyGlitchlessSubmit(ghostData, description, videoUrl);
+            else return new AnyPercentSubmit(ghostData, description, videoUrl);
         }
         if (ghostData.getGhostCategory() == RunCategory.HIGH) {
             return new HighPercentSubmit(ghostData, description, videoUrl);

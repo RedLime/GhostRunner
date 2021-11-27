@@ -10,9 +10,9 @@ import net.minecraft.world.Difficulty;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnyGlitchlessSubmit extends SubmitData {
+public class AnyPercentSubmit extends SubmitData {
 
-    public AnyGlitchlessSubmit(GhostData ghostData, String description, String videoUrl) {
+    public AnyPercentSubmit(GhostData ghostData, String description, String videoUrl) {
         super(ghostData, description, videoUrl);
 
         //Seed Type

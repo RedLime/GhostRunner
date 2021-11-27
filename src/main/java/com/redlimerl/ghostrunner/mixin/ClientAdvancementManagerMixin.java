@@ -21,7 +21,7 @@ public class ClientAdvancementManagerMixin {
     @ModifyArgs(method = "onAdvancements", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/AdvancementToast;<init>(Lnet/minecraft/advancement/Advancement;)V"))
     public void advancement(Args args) {
         Advancement advancement = args.get(0);
-        if (InGameTimer.INSTANCE.getStatus() != TimerStatus.NONE && InGameTimer.INSTANCE.getStatus() != TimerStatus.COMPLETED) {
+        if (InGameTimer.getInstance().getStatus() != TimerStatus.NONE && InGameTimer.getInstance().getStatus() != TimerStatus.COMPLETED) {
             if (Objects.equals(advancement.getId(), new Identifier("story/enter_the_nether"))) {
                 if (GhostInfo.INSTANCE.setCheckPoint(Timeline.Moment.ENTER_NETHER))
                     ReplayGhost.sendBestCheckPointMessage(Timeline.Moment.ENTER_NETHER);

@@ -70,7 +70,7 @@ public class ReplayGhost {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) return;
 
-        long nowTime = InGameTimer.INSTANCE.getInGameTime();
+        long nowTime = InGameTimer.getInstance().getInGameTime();
         if (bestTime == 0) {
             player.sendMessage(
                     new TranslatableText("ghostrunner.message.checkpoint_new")

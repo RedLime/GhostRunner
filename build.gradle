@@ -51,7 +51,7 @@ dependencies {
 	modIncludeImplementation(fabricApi.module("fabric-tool-attribute-api-v1", project.fabric_version))
 	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "curse.maven:speedrunigt-538881:3535674"
+	modImplementation "curse.maven:speedrunigt-538881:3538360"
 }
 
 processResources {

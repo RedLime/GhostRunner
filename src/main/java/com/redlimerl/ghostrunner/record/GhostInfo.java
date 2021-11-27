@@ -29,15 +29,15 @@ public class GhostInfo {
 
     public static final GhostInfo INSTANCE = new GhostInfo();
     public static GhostType currentGhostType = GhostType.RSG;
-    private static final InGameTimer inGameTimer = InGameTimer.INSTANCE;
     static {
         InGameTimer.onComplete(igt -> {
+            InGameTimer timer = InGameTimer.getInstance();
             MinecraftClient.getInstance().getToastManager().add(
-                    new GenericToast("IGT: "+InGameTimer.timeToStringFormat(inGameTimer.getInGameTime()),
-                            "RTA: "+InGameTimer.timeToStringFormat(inGameTimer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
+                    new GenericToast("IGT: "+InGameTimer.timeToStringFormat(timer.getInGameTime()),
+                            "RTA: "+InGameTimer.timeToStringFormat(timer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
             MinecraftClient.getInstance().getToastManager().add(
-                    new GenericToast(inGameTimer.getCategory().getCode().split("#")[1].replaceAll("_", " ") + " / " + currentGhostType.name(),
+                    new GenericToast(timer.getCategory().getCode().split("#")[1].replaceAll("_", " ") + " / " + currentGhostType.name(),
                             "S: "+INSTANCE.ghostData.getSeed(), null)
             );
             INSTANCE.save();
@@ -79,6 +79,10 @@ public class GhostInfo {
         return ghostData;
     }
 
+    private InGameTimer getTimer() {
+        return InGameTimer.getInstance();
+    }
+
     public String toDataString() {
         StringBuilder stringBuilder = new StringBuilder();
         PlayerLog prevLog = null;
@@ -110,7 +114,7 @@ public class GhostInfo {
     }
 
     public boolean setCheckPoint(Timeline.Moment moment) {
-        return timeline.addTimeline(moment, inGameTimer.getInGameTime());
+        return timeline.addTimeline(moment, getTimer().getInGameTime());
     }
 
     public long getCheckPoint(Timeline.Moment moment) {
@@ -128,9 +132,9 @@ public class GhostInfo {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
         new Thread(() -> {
-            ghostData.setRealTimeAttack(inGameTimer.getRealTimeAttack());
-            ghostData.setInGameTime(inGameTimer.getInGameTime());
-            ghostData.setGhostCategory(inGameTimer.getCategory());
+            ghostData.setRealTimeAttack(getTimer().getRealTimeAttack());
+            ghostData.setInGameTime(getTimer().getInGameTime());
+            ghostData.setGhostCategory(getTimer().getCategory());
             ghostData.updateCreatedDate();
             ghostData.setUseF3(GhostRunner.IS_USE_F3);
             ghostData.setSubmittable(!GhostRunner.IS_USE_GHOST);
