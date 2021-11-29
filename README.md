@@ -1,4 +1,4 @@
-# GhostRunner for 1.16.1
+# GhostRunner for 1.16.5
 
 Ghost Runner is made for Minecraft speedrunners.
 \
