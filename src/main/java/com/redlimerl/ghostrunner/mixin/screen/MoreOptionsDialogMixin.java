@@ -13,11 +13,11 @@ import java.util.OptionalLong;
 @Mixin(MoreOptionsDialog.class)
 public abstract class MoreOptionsDialogMixin {
 
-    @Shadow private String seedText;
+    @Shadow protected abstract OptionalLong getSeed();
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void getSeed(CallbackInfo ci) {
-        GhostRunner.OPTIONAL_LONG = tryParseLong2(seedText);
+        GhostRunner.OPTIONAL_LONG = getSeed();
     }
 
     private static OptionalLong tryParseLong2(String string) {

@@ -5,7 +5,7 @@ import com.redlimerl.ghostrunner.record.GhostInfo;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.render.GhostRenderFix;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.registry.RegistryTracker;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.level.LevelInfo;
@@ -23,8 +23,8 @@ public class MinecraftClientMixin {
         if (GhostRenderFix.isRender) cir.setReturnValue(true);
     }
 
-    @Inject(method = "method_29607(Ljava/lang/String;Lnet/minecraft/world/level/LevelInfo;Lnet/minecraft/util/registry/RegistryTracker$Modifiable;Lnet/minecraft/world/gen/GeneratorOptions;)V", at = @At("TAIL"))
-    private void createWorld(String worldName, LevelInfo levelInfo, RegistryTracker.Modifiable modifiable, GeneratorOptions generatorOptions, CallbackInfo ci) {
+    @Inject(method = "createWorld", at = @At("TAIL"))
+    private void createWorld(String worldName, LevelInfo levelInfo, DynamicRegistryManager.Impl registryTracker, GeneratorOptions generatorOptions, CallbackInfo ci) {
         GhostRunner.IS_USE_F3 = false;
         GhostRunner.IS_USE_GHOST = false;
         GhostRunner.MINIMUM_DIFFICULTY = Difficulty.HARD;

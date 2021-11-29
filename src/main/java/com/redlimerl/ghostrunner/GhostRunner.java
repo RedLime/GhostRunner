@@ -19,17 +19,15 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ScreenTexts;
-import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
+import net.minecraft.client.gui.screen.option.ControlsOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.resource.language.I18n;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -38,10 +36,7 @@ import net.minecraft.world.Difficulty;
 import org.lwjgl.glfw.GLFW;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
 import java.util.OptionalLong;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "ConstantConditions"})
 public class GhostRunner implements ClientModInitializer {

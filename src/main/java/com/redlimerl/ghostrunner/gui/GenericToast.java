@@ -4,17 +4,20 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.BackgroundHelper;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.StringRenderable;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.StringVisitable;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.List;
 
 public class GenericToast implements Toast {
+
+    private static Identifier TEXTURE = new Identifier("textures/gui/toasts.png");
 
     private boolean justUpdated = true;
     private long startTime;
@@ -38,13 +41,13 @@ public class GenericToast implements Toast {
 
         MinecraftClient client = manager.getGame();
         TextRenderer textRenderer = client.textRenderer;
-        client.getTextureManager().bindTexture(TOASTS_TEX);
+        client.getTextureManager().bindTexture(TEXTURE);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
         manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
 
         int xPos = this.icon != null ? 30: 10;
         int lineSize;
-        List<StringRenderable> titleList = textRenderer.wrapLines(StringRenderable.plain(this.titleKey), 115 + (this.icon != null ? 10 : 30));
+        List<OrderedText> titleList = textRenderer.wrapLines(StringVisitable.plain(this.titleKey), 115 + (this.icon != null ? 10 : 30));
         if (this.descriptionKey == null) {
             String[] title = this.titleKey.split("\n");
             if (title.length == 2) {
@@ -60,7 +63,7 @@ public class GenericToast implements Toast {
                 lineSize = 1;
             }
         } else {
-            List<StringRenderable> descriptionList = textRenderer.wrapLines(StringRenderable.plain(this.descriptionKey), 115 + (this.icon != null ? 10 : 30));
+            List<OrderedText> descriptionList = textRenderer.wrapLines(StringVisitable.plain(this.descriptionKey), 115 + (this.icon != null ? 10 : 30));
             if (titleList.size() + descriptionList.size() > 2) {
                 lineSize = Math.min(titleList.size(), 2) + Math.min(descriptionList.size(), 2);
 

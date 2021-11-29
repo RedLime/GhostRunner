@@ -50,7 +50,7 @@ public class GhostListScreen extends Screen {
     public void init() {
 
         assert this.client != null;
-        this.client.keyboard.enableRepeatEvents(true);
+        this.client.keyboard.setRepeatEvents(true);
 
         this.searchBox = new TextFieldWidget(textRenderer, width / 2 - 22, 22, 180, 20, null, new TranslatableText("selectWorld.search"));
         this.searchBox.setChangedListener((string) -> this.ghostList.filter(() -> string, filterType, order, false));
@@ -191,7 +191,7 @@ public class GhostListScreen extends Screen {
 
     @Override
     public void removed() {
-        if (client != null) client.keyboard.enableRepeatEvents(false);
+        if (client != null) client.keyboard.setRepeatEvents(false);
     }
 
     @Override

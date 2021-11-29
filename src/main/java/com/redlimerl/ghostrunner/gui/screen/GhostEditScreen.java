@@ -43,7 +43,7 @@ public class GhostEditScreen extends Screen {
     @Override
     protected void init() {
         assert client != null;
-        client.keyboard.enableRepeatEvents(true);
+        client.keyboard.setRepeatEvents(true);
 
         this.ghostNameTextField = new TextFieldWidget(textRenderer, width / 2 - 100, yPos, 200, 20, new TranslatableText("selectWorld.enterName"));
         this.ghostNameTextField.setMaxLength(64);
@@ -134,6 +134,6 @@ public class GhostEditScreen extends Screen {
 
     @Override
     public void removed() {
-        if (client != null) client.keyboard.enableRepeatEvents(false);
+        if (client != null) client.keyboard.setRepeatEvents(false);
     }
 }
