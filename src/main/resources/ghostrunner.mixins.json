@@ -2,8 +2,8 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.redlimerl.ghostrunner.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
+  "compatibilityLevel": "JAVA_16",
+  "client": [
     "ClientAdvancementManagerMixin",
     "ClientPlayerEntityMixin",
     "KeyboardMixin",
@@ -12,8 +12,6 @@
     "screen.CreateWorldScreenMixin",
     "screen.MoreOptionsDialogMixin",
     "screen.TitleScreenMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

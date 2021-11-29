@@ -128,7 +128,7 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
         client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
     }
 
-    public static class GhostEntry extends EntryListWidget.Entry<GhostEntry> {
+    public static class GhostEntry extends AlwaysSelectedEntryListWidget.Entry<GhostEntry> {
 
         private final GhostListWidget ghostListWidget;
         public final GhostData ghost;
@@ -210,7 +210,7 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
         }
 
         public void delete() {
-            client.openScreen(new ConfirmScreen(t -> {
+            client.setScreen(new ConfirmScreen(t -> {
                 if (t) {
                     ReplayGhost.removeInSelectedGhosts(ghost.getSeed(), ghost.getUuid());
                     File file = ghost.getPath().toFile();
@@ -223,7 +223,7 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
                     }
                     ghostListWidget.filter(() -> ghostSelection.searchBox.getText(), ghostSelection.filterType, ghostSelection.order, true);
                 }
-                client.openScreen(this.ghostSelection);
+                client.setScreen(this.ghostSelection);
             }, new TranslatableText("ghostrunner.message.delete_ghost"),
                     new TranslatableText("selectWorld.deleteWarning", this.ghost.getGhostName()),
                     new TranslatableText("selectWorld.deleteButton"),
@@ -232,7 +232,12 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
         }
 
         public void edit() {
-            client.openScreen(new GhostEditScreen(ghostSelection, ghost));
+            client.setScreen(new GhostEditScreen(ghostSelection, ghost));
+        }
+
+        @Override
+        public Text getNarration() {
+            return new LiteralText(ghost.getGhostName());
         }
     }
 }

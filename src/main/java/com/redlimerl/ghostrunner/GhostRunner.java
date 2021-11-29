@@ -12,7 +12,7 @@ import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
@@ -87,7 +87,7 @@ public class GhostRunner implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.INSTANCE.register(GHOST_ENTITY_TYPE, (manager, context) -> new GhostEntity.Renderer(manager));
+        EntityRendererRegistry.register(GHOST_ENTITY_TYPE, GhostEntity.Renderer::new);
         FabricDefaultAttributeRegistry.register(GHOST_ENTITY_TYPE,
                 GhostEntity.createLivingAttributes().add(EntityAttributes.GENERIC_FOLLOW_RANGE));
 
@@ -119,19 +119,19 @@ public class GhostRunner implements ClientModInitializer {
         SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new APIKeyScreen(bool -> client.openScreen(screen)));
+                    if (client != null) client.setScreen(new APIKeyScreen(bool -> client.setScreen(screen)));
                 })
         );
         SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.info"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new GhostRunnerInfoScreen(screen));
+                    if (client != null) client.setScreen(new GhostRunnerInfoScreen(screen));
                 })
         );
         SpeedRunOptions.addOptionButton(screen ->
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
+                    if (client != null) client.setScreen(new ControlsOptionsScreen(screen, client.options));
                 })
         );
     }

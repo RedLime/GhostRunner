@@ -15,16 +15,8 @@ public abstract class MoreOptionsDialogMixin {
 
     @Shadow protected abstract OptionalLong getSeed();
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tickSeedTextField", at = @At("TAIL"))
     private void getSeed(CallbackInfo ci) {
         GhostRunner.OPTIONAL_LONG = getSeed();
-    }
-
-    private static OptionalLong tryParseLong2(String string) {
-        try {
-            return OptionalLong.of(Long.parseLong(string));
-        } catch (NumberFormatException var2) {
-            return OptionalLong.empty();
-        }
     }
 }

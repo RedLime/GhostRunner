@@ -55,8 +55,8 @@ public class PlayerLog {
         this.x = player.getX();
         this.y = player.getY();
         this.z = player.getZ();
-        this.pitch = player.pitch;
-        this.yaw = player.yaw;
+        this.pitch = player.getPitch();
+        this.yaw = player.getYaw();
     }
 
     @Override

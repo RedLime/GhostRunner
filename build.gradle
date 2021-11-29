@@ -1,12 +1,12 @@
 //file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 plugins {
-	id 'fabric-loom' version '0.7-SNAPSHOT'
+	id 'fabric-loom' version '0.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -24,6 +24,10 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/ghostrunner.accesswidener")
 }
 
 configurations {
@@ -51,7 +55,7 @@ dependencies {
 	modIncludeImplementation(fabricApi.module("fabric-tool-attribute-api-v1", project.fabric_version))
 	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "curse.maven:speedrunigt-538881:3538361"
+	modImplementation "curse.maven:speedrunigt-538881:3538362"
 }
 
 processResources {
@@ -70,7 +74,7 @@ tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 
 	// Minecraft 1.17 (21w19a) upwards uses Java 16.
-	def targetVersion = 8
+	def targetVersion = 16
 	if (JavaVersion.current().isJava9Compatible()) {
 		it.options.release = targetVersion
 	}

@@ -57,14 +57,14 @@ public class GhostListScreen extends Screen {
 
         this.ghostList = new GhostListWidget(this, client, width, height, 48, height - 64, 54, () -> searchBox.getText(), this.ghostList);
 
-        children.add(this.searchBox);
-        children.add(this.ghostList);
+        addSelectableChild(this.searchBox);
+        addSelectableChild(this.ghostList);
 
-        addButton(new TexturedButtonWidget(width / 2 + 168, 22, 20, 20, Utils.getUpdateButtonOffset(), 0,
+        addDrawableChild(new TexturedButtonWidget(width / 2 + 168, 22, 20, 20, Utils.getUpdateButtonOffset(), 0,
                 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64,
-                (button) -> client.openScreen(new GhostRunnerInfoScreen(this)), new TranslatableText("ghostrunner.title")));
+                (button) -> client.setScreen(new GhostRunnerInfoScreen(this)), new TranslatableText("ghostrunner.title")));
 
-        addButton(new ButtonWidget(width / 2 - 176, 22, 84, 20,
+        addDrawableChild(new ButtonWidget(width / 2 - 176, 22, 84, 20,
                 new TranslatableText("ghostrunner.menu.order").append(": ").append(getOrder()), (buttonWidget) -> {
             order++;
             if (order >= 4) order = 0;
@@ -72,7 +72,7 @@ public class GhostListScreen extends Screen {
             this.ghostList.filter(() -> searchBox.getText(), filterType, order, false);
         }));
 
-        addButton(new ButtonWidget(width / 2 - 88, 22, 60, 20,
+        addDrawableChild(new ButtonWidget(width / 2 - 88, 22, 60, 20,
                 new TranslatableText("ghostrunner.menu.show").append(": ").append(getFilterType()), (buttonWidget) -> {
             filterType++;
             if (filterType >= 4) filterType = 0;
@@ -80,7 +80,7 @@ public class GhostListScreen extends Screen {
             this.ghostList.filter(() -> searchBox.getText(), filterType, order, false);
         }));
 
-        addButton(new ButtonWidget(width / 2 + 4, height - 52, 150, 20, new TranslatableText("ghostrunner.menu.import_ghost_file"), (buttonWidget) -> {
+        addDrawableChild(new ButtonWidget(width / 2 + 4, height - 52, 150, 20, new TranslatableText("ghostrunner.menu.import_ghost_file"), (buttonWidget) -> {
             MemoryStack stack = MemoryStack.stackPush();
             PointerBuffer filters = stack.mallocPointer(1);
             filters.put(stack.UTF8("*.mcg"));
@@ -134,10 +134,10 @@ public class GhostListScreen extends Screen {
             stack.pop();
         }));
 
-        this.exportButton = addButton(new ButtonWidget(width / 2 - 154, height - 52, 150, 20, new TranslatableText("ghostrunner.menu.export_ghost_file"),
+        this.exportButton = addDrawableChild(new ButtonWidget(width / 2 - 154, height - 52, 150, 20, new TranslatableText("ghostrunner.menu.export_ghost_file"),
                 (button) -> {
-            if (ghostList.getSelected() != null && ghostList.getSelected().ghost != null) {
-                GhostData ghost = ghostList.getSelected().ghost;
+            if (ghostList.getSelectedOrNull() != null && ghostList.getSelectedOrNull().ghost != null) {
+                GhostData ghost = ghostList.getSelectedOrNull().ghost;
                 button.active = false;
                 new Thread(() -> {
                     int i = 0;
@@ -154,20 +154,20 @@ public class GhostListScreen extends Screen {
             }
         }));
 
-        this.editButton = addButton(new ButtonWidget(width / 2 - 154, height - 28, 72, 20, new TranslatableText("selectWorld.edit"),
+        this.editButton = addDrawableChild(new ButtonWidget(width / 2 - 154, height - 28, 72, 20, new TranslatableText("selectWorld.edit"),
                         (button) -> {
-                            if (ghostList != null && ghostList.getSelected() != null) ghostList.getSelected().edit();
+                            if (ghostList != null && ghostList.getSelectedOrNull() != null) ghostList.getSelectedOrNull().edit();
                         }));
 
-        this.deleteButton = addButton(new ButtonWidget(width / 2 - 76, height - 28, 72, 20, new TranslatableText("selectWorld.delete"),
+        this.deleteButton = addDrawableChild(new ButtonWidget(width / 2 - 76, height - 28, 72, 20, new TranslatableText("selectWorld.delete"),
                         (button) -> {
-                            if (ghostList != null && ghostList.getSelected() != null) ghostList.getSelected().delete();
+                            if (ghostList != null && ghostList.getSelectedOrNull() != null) ghostList.getSelectedOrNull().delete();
                         }));
 
 
-        addButton(new ButtonWidget(width / 2 + 4, height - 28, 72, 20, new TranslatableText("options.title"),
-                (button) -> client.openScreen(new SpeedRunOptionScreen(this))));
-        addButton(new ButtonWidget(width / 2 + 82, height - 28, 72, 20, ScreenTexts.CANCEL, (button) -> client.openScreen(parent)));
+        addDrawableChild(new ButtonWidget(width / 2 + 4, height - 28, 72, 20, new TranslatableText("options.title"),
+                (button) -> client.setScreen(new SpeedRunOptionScreen(this))));
+        addDrawableChild(new ButtonWidget(width / 2 + 82, height - 28, 72, 20, ScreenTexts.CANCEL, (button) -> client.setScreen(parent)));
 
         setInitialFocus(this.searchBox);
 
@@ -186,7 +186,7 @@ public class GhostListScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (client != null) client.openScreen(parent);
+        if (client != null) client.setScreen(parent);
     }
 
     @Override

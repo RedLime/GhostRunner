@@ -48,17 +48,17 @@ public class GhostEditScreen extends Screen {
         this.ghostNameTextField = new TextFieldWidget(textRenderer, width / 2 - 100, yPos, 200, 20, new TranslatableText("selectWorld.enterName"));
         this.ghostNameTextField.setMaxLength(64);
         this.ghostNameTextField.setText(ghost.getGhostName());
-        children.add(this.ghostNameTextField);
+        addSelectableChild(this.ghostNameTextField);
         setInitialFocus(this.ghostNameTextField);
 
-        this.saveButton = addButton(new ButtonWidget(width / 2 - 100, yPos + 24, 200, 20, new TranslatableText("ghostrunner.menu.change_ghost_name"),
+        this.saveButton = addDrawableChild(new ButtonWidget(width / 2 - 100, yPos + 24, 200, 20, new TranslatableText("ghostrunner.menu.change_ghost_name"),
                 (button) -> {
                     this.ghost.setGhostName(this.ghostNameTextField.getText());
                     this.ghost.update();
                     isChangedName = true;
                 }));
 
-        addButton(new ButtonWidget(width / 2 - 100, yPos + 57, 200, 20, new TranslatableText("ghostrunner.menu.copy_seed"),
+        addDrawableChild(new ButtonWidget(width / 2 - 100, yPos + 57, 200, 20, new TranslatableText("ghostrunner.menu.copy_seed"),
                 (button) -> {
                     client.keyboard.setClipboard(String.valueOf(ghost.getSeed()));
                     client.getToastManager().add(
@@ -66,27 +66,27 @@ public class GhostEditScreen extends Screen {
                     );
                 }));
 
-        addButton(new ButtonWidget(width / 2 - 100, yPos + 78, 200, 20, new TranslatableText("ghostrunner.menu.show_ghost_info"), (button) -> client.openScreen(new GhostInfoScreen(this, ghost))));
+        addDrawableChild(new ButtonWidget(width / 2 - 100, yPos + 78, 200, 20, new TranslatableText("ghostrunner.menu.show_ghost_info"), (button) -> client.setScreen(new GhostInfoScreen(this, ghost))));
 
-        this.submitButton = addButton(new ButtonWidget(width / 2 - 100, yPos + 99, 200, 20,
+        this.submitButton = addDrawableChild(new ButtonWidget(width / 2 - 100, yPos + 99, 200, 20,
                 ghost.getRecordURL().isEmpty() ? new TranslatableText("ghostrunner.menu.submit_record") : new TranslatableText("ghostrunner.menu.open_speedrun_com"),
                 ghost.getRecordURL().isEmpty() ? (button) -> {
                     if (SpeedRunOptions.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY).length() < 24) {
-                        client.openScreen(new ConfirmScreen(bool ->
-                                client.openScreen(bool ? new APIKeyScreen(bool2 ->
-                                        client.openScreen(bool2 ? new GhostSubmitScreen(this, ghost) : this)) : this),
+                        client.setScreen(new ConfirmScreen(bool ->
+                                client.setScreen(bool ? new APIKeyScreen(bool2 ->
+                                        client.setScreen(bool2 ? new GhostSubmitScreen(this, ghost) : this)) : this),
                                 new TranslatableText("selectWorld.recreate.error.title"),
                                 new TranslatableText("ghostrunner.message.not_registered_api_key"),
                                 new TranslatableText("ghostrunner.menu.register_api_key"),
                                 ScreenTexts.CANCEL));
                     } else {
-                        client.openScreen(new GhostSubmitScreen(this, ghost));
+                        client.setScreen(new GhostSubmitScreen(this, ghost));
                     }
                 } : (button) -> Util.getOperatingSystem().open(ghost.getRecordURL())));
         this.isSupportCategory = SubmitData.create(ghost, "something", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", false) != null;
         this.submitButton.active = (!ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost)) && this.isSupportCategory && ghost.isSubmittable();
 
-        addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));
+        addDrawableChild(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));
     }
 
     @Override
@@ -127,7 +127,7 @@ public class GhostEditScreen extends Screen {
 
     public void close() {
         if (client != null) {
-            client.openScreen(parent);
+            client.setScreen(parent);
             if (isChangedName) parent.refresh();
         }
     }

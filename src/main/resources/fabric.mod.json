@@ -27,7 +27,10 @@
 
   "depends": {
     "fabricloader": ">=0.11.3",
-    "minecraft": "1.16.5",
-    "speedrunigt": ">=2.2"
-  }
+    "minecraft": "1.17.1",
+    "speedrunigt": ">=2.2",
+    "java": ">=16"
+  },
+
+  "accessWidener": "ghostrunner.accesswidener"
 }

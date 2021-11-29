@@ -1,4 +1,4 @@
-# GhostRunner for 1.16.1
+# GhostRunner for 1.17.1
 
 Ghost Runner is made for Minecraft speedrunners.
 \
@@ -25,9 +25,9 @@ If you are running for speedrun.com, I recommend that you do not use this mod ye
 
 ## Features
 - Ghost Feature
-  - [Showcase Video](https://www.youtube.com/watch?v=LYr23gq3tg4)
+    - [Showcase Video](https://www.youtube.com/watch?v=LYr23gq3tg4)
 - Auto Submit on [Speedrun.com](https://speedrun.com/mc).
-  - [Showcase Video](https://www.youtube.com/watch?v=QSYImJZejDk)
+    - [Showcase Video](https://www.youtube.com/watch?v=QSYImJZejDk)
 - Check the record of some sections (Enter Nether, Bastion, Fortress, End)
 
 ## Special Thanks

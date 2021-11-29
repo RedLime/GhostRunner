@@ -5,6 +5,9 @@ import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.gui.screen.GhostSelectScreen;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.RunCategory;
+import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -26,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CreateWorldScreen.class)
 public abstract class CreateWorldScreenMixin extends Screen {
 
-    @Shadow protected abstract <T extends ClickableWidget> T addButton(T button);
+    @Shadow protected abstract <T extends Element & Drawable & Selectable> T addDrawableChild(T drawableElement);
 
     @Shadow public boolean hardcore;
     private ButtonWidget fsgButton;
@@ -39,23 +42,23 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private void initButton(CallbackInfo ci) {
-        this.fsgButton = addButton(new ButtonWidget(this.width / 2 + 5, 151, 150, 20,
+        this.fsgButton = addDrawableChild(new ButtonWidget(this.width / 2 + 5, 151, 150, 20,
                 new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.IS_FSG ? ScreenTexts.YES : ScreenTexts.NO), (buttonWidget) -> {
             GhostRunner.IS_FSG = !GhostRunner.IS_FSG;
             buttonWidget.setMessage(new TranslatableText("ghostrunner.world.is_fsg").append(": ").append(GhostRunner.IS_FSG ? ScreenTexts.YES : ScreenTexts.NO));
         }));
         this.fsgButton.visible = false;
 
-        this.ghostButton = addButton(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
+        this.ghostButton = addDrawableChild(new TexturedButtonWidget(this.width / 2 + 104, 60, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null && GhostRunner.OPTIONAL_LONG.isPresent()) {
                 if (!GhostRunner.IS_SHOW_USE_GHOST_WARN) {
-                    this.client.openScreen(new ConfirmScreen(bool -> {
-                        this.client.openScreen(bool ? new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()) : this);
+                    this.client.setScreen(new ConfirmScreen(bool -> {
+                        this.client.setScreen(bool ? new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()) : this);
                         GhostRunner.IS_SHOW_USE_GHOST_WARN = bool;
                     }, new TranslatableText("createWorld.customize.custom.confirmTitle").formatted(Formatting.RED, Formatting.BOLD),
                             new TranslatableText("ghostrunner.message.not_submittable_with_ghosts").formatted(Formatting.YELLOW)));
                 } else {
-                    this.client.openScreen(new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()));
+                    this.client.setScreen(new GhostSelectScreen(this, GhostRunner.OPTIONAL_LONG.getAsLong()));
                 }
             }
         }));

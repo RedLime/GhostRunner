@@ -7,6 +7,7 @@ import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
@@ -109,6 +110,11 @@ public class GhostSelectWidget extends ElementListWidget<GhostSelectWidget.Ghost
 
         @Override
         public List<? extends Element> children() {
+            return buttons;
+        }
+
+        @Override
+        public List<? extends Selectable> selectableChildren() {
             return buttons;
         }
     }

@@ -11,6 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -140,9 +141,9 @@ public class ReplayGhost {
                     playerLog.x == null ? replay.ghost.getX() : playerLog.x,
                     playerLog.y == null ? replay.ghost.getY() : playerLog.y,
                     playerLog.z == null ? replay.ghost.getZ() : playerLog.z,
-                    playerLog.yaw == null ? replay.ghost.yaw : playerLog.yaw,
-                    playerLog.pitch == null ? replay.ghost.pitch : playerLog.pitch, 1, true);
-            replay.ghost.setHeadYaw(playerLog.yaw == null ? replay.ghost.yaw : playerLog.yaw);
+                    playerLog.yaw == null ? replay.ghost.getYaw() : playerLog.yaw,
+                    playerLog.pitch == null ? replay.ghost.getPitch() : playerLog.pitch, 1, true);
+            replay.ghost.setHeadYaw(playerLog.yaw == null ? replay.ghost.getYaw() : playerLog.yaw);
             if (playerLog.pose != null) replay.ghost.setPose(playerLog.pose);
         }
     }
@@ -161,13 +162,13 @@ public class ReplayGhost {
         GhostEntity entity = new GhostEntity(GhostRunner.GHOST_ENTITY_TYPE, world);
         entity.refreshPositionAndAngles(log.x == null ? 0 : log.x, log.y == null ? 0 : log.y, log.z == null ? 0 : log.z, 0f, 0f);
         entity.setTargetSkinUuid(ghostInfo.getGhostData().getGhostUserUuid());
-        world.addEntity(entity.getEntityId(), entity);
+        world.addEntity(entity.getId(), entity);
         ghost = entity;
     }
 
     private void remove() {
         if (ghost != null) {
-            ghost.remove();
+            ghost.remove(Entity.RemovalReason.DISCARDED);
             ghost = null;
         }
     }

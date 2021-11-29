@@ -30,20 +30,20 @@ public class APIKeyScreen extends Screen {
         assert client != null;
         client.keyboard.setRepeatEvents(true);
 
-        this.saveButton = addButton(new ButtonWidget(width / 2 - 100, height / 4 + 32, 98, 20, new TranslatableText("selectWorld.edit.save"),
+        this.saveButton = addDrawableChild(new ButtonWidget(width / 2 - 100, height / 4 + 32, 98, 20, new TranslatableText("selectWorld.edit.save"),
                 (button) -> {
                     SpeedRunOptions.setOption(RunnerOptions.SPEEDRUN_COM_API_KEY, finalKey);
                     booleanConsumer.accept(true);
                 }));
 
-        addButton(new ButtonWidget(width / 2 + 2, height / 4 + 32, 98, 20, ScreenTexts.CANCEL, (button) ->  booleanConsumer.accept(false)));
+        addDrawableChild(new ButtonWidget(width / 2 + 2, height / 4 + 32, 98, 20, ScreenTexts.CANCEL, (button) ->  booleanConsumer.accept(false)));
 
-        addButton(new ButtonWidget(width / 2 - 100, height - 30, 200, 20, new TranslatableText("ghostrunner.menu.open_speedrun_com"), (button) -> Util.getOperatingSystem().open("https://www.speedrun.com/mc")));
+        addDrawableChild(new ButtonWidget(width / 2 - 100, height - 30, 200, 20, new TranslatableText("ghostrunner.menu.open_speedrun_com"), (button) -> Util.getOperatingSystem().open("https://www.speedrun.com/mc")));
 
         this.apiKeyTextField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 9, 200, 20, new LiteralText("API Key..."));
         this.apiKeyTextField.setMaxLength(30);
         this.apiKeyTextField.setText(SpeedRunOptions.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY));
-        children.add(this.apiKeyTextField);
+        addSelectableChild(this.apiKeyTextField);
         setInitialFocus(this.apiKeyTextField);
     }
 

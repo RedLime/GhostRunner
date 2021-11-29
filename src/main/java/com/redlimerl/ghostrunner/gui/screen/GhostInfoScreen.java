@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
@@ -31,8 +32,8 @@ public class GhostInfoScreen extends Screen {
     @Override
     protected void init() {
         generalList = new GeneralInfoListWidget(client, this);
-        addButton(new ButtonWidget(width / 2 - 100, height - 28, 200, 20, ScreenTexts.DONE, button -> {
-            if (client != null) client.openScreen(parent);
+        addDrawableChild(new ButtonWidget(width / 2 - 100, height - 28, 200, 20, ScreenTexts.DONE, button -> {
+            if (client != null) client.setScreen(parent);
         }));
     }
 
@@ -89,8 +90,13 @@ public class GhostInfoScreen extends Screen {
             public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
                 TextRenderer textRenderer = statsListWidget.infoScreen.textRenderer;
                 MutableText text = new TranslatableText("ghostrunner.ghostdata." + key).formatted(Formatting.GRAY);
-                statsListWidget.drawStringWithShadow(matrices, textRenderer, text.getString(), x + 2, y + 1, index % 2 == 0 ? 16777215 : 9474192);
-                statsListWidget.drawStringWithShadow(matrices, textRenderer, value, x + 2 + 213 - textRenderer.getWidth(value), y + 1, index % 2 == 0 ? 16777215 : 9474192);
+                drawStringWithShadow(matrices, textRenderer, text.getString(), x + 2, y + 1, index % 2 == 0 ? 16777215 : 9474192);
+                drawStringWithShadow(matrices, textRenderer, value, x + 2 + 213 - textRenderer.getWidth(value), y + 1, index % 2 == 0 ? 16777215 : 9474192);
+            }
+
+            @Override
+            public Text getNarration() {
+                return new TranslatableText("ghostrunner.ghostdata.title");
             }
         }
     }
@@ -98,7 +104,7 @@ public class GhostInfoScreen extends Screen {
     @Override
     public void onClose() {
         if (client != null) {
-            client.openScreen(parent);
+            client.setScreen(parent);
         }
     }
 }

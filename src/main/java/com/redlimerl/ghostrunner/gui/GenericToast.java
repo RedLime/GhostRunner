@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.hud.BackgroundHelper;
+import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
@@ -31,7 +32,6 @@ public class GenericToast implements Toast {
         this.icon = icon;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Visibility draw(MatrixStack matrices, ToastManager manager, long currentTime) {
         if (this.justUpdated) {
@@ -41,8 +41,9 @@ public class GenericToast implements Toast {
 
         MinecraftClient client = manager.getGame();
         TextRenderer textRenderer = client.textRenderer;
-        client.getTextureManager().bindTexture(TEXTURE);
-        RenderSystem.color3f(1.0F, 1.0F, 1.0F);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
 
         int xPos = this.icon != null ? 30: 10;

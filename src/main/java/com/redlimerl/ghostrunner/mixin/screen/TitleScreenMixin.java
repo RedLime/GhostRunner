@@ -32,10 +32,10 @@ public class TitleScreenMixin extends Screen {
     private void onInit(CallbackInfo ci) {
         int j = this.height / 4 + 48;
 
-        this.addButton(new TexturedButtonWidget(this.width / 2 + 104, j, 20, 20,
+        this.addDrawableChild(new TexturedButtonWidget(this.width / 2 + 104, j, 20, 20,
                 Utils.getUpdateButtonOffset(), 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null) {
-                this.client.openScreen(new GhostListScreen(this));
+                this.client.setScreen(new GhostListScreen(this));
             }
         }, new TranslatableText("ghostrunner.title")));
     }

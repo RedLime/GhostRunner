@@ -37,9 +37,9 @@ public class GhostSubmitScreen extends Screen {
         assert client != null;
 
         client.keyboard.setRepeatEvents(true);
-        this.submitButton = addButton(new ButtonWidget(width / 2 - 100, height - 65, 200, 20, ScreenTexts.PROCEED,
+        this.submitButton = addDrawableChild(new ButtonWidget(width / 2 - 100, height - 65, 200, 20, ScreenTexts.PROCEED,
                 (button) -> {
-                    client.openScreen(new GhostLoadingScreen(new TranslatableText("ghostrunner.message.submitting_record")));
+                    client.setScreen(new GhostLoadingScreen(new TranslatableText("ghostrunner.message.submitting_record")));
                     new Thread(() -> {
                         try {
                             @SuppressWarnings("ConstantConditions")
@@ -49,16 +49,16 @@ public class GhostSubmitScreen extends Screen {
                                 ghostData.setRecordURL(record);
                                 this.ghostData.update();
                             }
-                            client.execute(() -> client.openScreen(new ConfirmScreen(bool -> {
+                            client.execute(() -> client.setScreen(new ConfirmScreen(bool -> {
                                 if (bool) {
                                     Util.getOperatingSystem().open(record);
                                 } else {
-                                    client.openScreen(parent);
+                                    client.setScreen(parent);
                                 }
                             }, new TranslatableText("ghostrunner.title.success"), new TranslatableText("ghostrunner.message.submitted_record"), new TranslatableText("chat.link.open"), ScreenTexts.DONE)));
                         } catch (Exception e) {
                             client.execute(() ->
-                                    client.openScreen(
+                                    client.setScreen(
                                             new GhostErrorScreen(parent, new TranslatableText("selectWorld.recreate.error.title"), new TranslatableText("ghostrunner.message.failed_submit_record"))
                                     )
                             );
@@ -68,24 +68,24 @@ public class GhostSubmitScreen extends Screen {
                 }
         ));
 
-        addButton(new ButtonWidget(width / 2 - 100, this.submitButton.y + 24, 200, 20, ScreenTexts.CANCEL, (button) -> client.openScreen(parent)));
+        addDrawableChild(new ButtonWidget(width / 2 - 100, this.submitButton.y + 24, 200, 20, ScreenTexts.CANCEL, (button) -> client.setScreen(parent)));
 
-        this.addButton(new TexturedButtonWidget(submitButton.x - 24, submitButton.y, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
+        this.addDrawableChild(new TexturedButtonWidget(submitButton.x - 24, submitButton.y, 20, 20, 0, 0, 20, GhostRunner.BUTTON_ICON_TEXTURE, 64, 64, (buttonWidget) -> {
             if (this.client != null) {
-                this.client.openScreen(new GhostInfoScreen(this, ghostData));
+                this.client.setScreen(new GhostInfoScreen(this, ghostData));
             }
         }, new TranslatableText("ghostrunner.title")));
 
         this.videoUrlField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 - 9, 200, 20, new LiteralText("Video URL..."));
         this.videoUrlField.setMaxLength(200);
-        children.add(this.videoUrlField);
+        addSelectableChild(this.videoUrlField);
         setInitialFocus(this.videoUrlField);
 
         this.descriptionField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 31, 200, 20, new LiteralText("..."));
         this.descriptionField.setMaxLength(200);
-        children.add(this.descriptionField);
+        addSelectableChild(this.descriptionField);
 
-        this.glitchRunCheckBox = this.addButton(new CheckboxWidget(width / 2 - 100, height / 4 + 60, 20, 20, new TranslatableText("ghostrunner.title.is_glitch_run"), false));
+        this.glitchRunCheckBox = this.addDrawableChild(new CheckboxWidget(width / 2 - 100, height / 4 + 60, 20, 20, new TranslatableText("ghostrunner.title.is_glitch_run"), false));
         SubmitData testSubmit = SubmitData.create(this.ghostData, "", "https://www.youtube.com/", true);
         this.glitchRunCheckBox.visible = testSubmit != null && testSubmit.isSupportGlitchRun();
     }
@@ -115,7 +115,7 @@ public class GhostSubmitScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (client != null) client.openScreen(parent);
+        if (client != null) client.setScreen(parent);
     }
 
     @Override

@@ -2,9 +2,10 @@ package com.redlimerl.ghostrunner.entity;
 
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.render.GhostRenderFix;
+import net.minecraft.client.model.Dilation;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.DefaultSkinHelper;
@@ -33,13 +34,14 @@ public class GhostEntity extends LivingEntity {
 
     public static class Model extends PlayerEntityModel<GhostEntity> {
         public Model() {
-            super(0, false);
+            super(getTexturedModelData(Dilation.NONE, false).getRoot().createPart(64, 64), false);
         }
     }
 
     public static class Renderer extends LivingEntityRenderer<GhostEntity, Model> {
-        public Renderer(EntityRenderDispatcher dispatcher) {
-            super(dispatcher, new Model(), 0);
+
+        public Renderer(EntityRendererFactory.Context ctx) {
+            super(ctx, new Model(), 0.0f);
         }
 
         @Override
@@ -102,9 +104,7 @@ public class GhostEntity extends LivingEntity {
     }
 
     @Override
-    public boolean isSpectator() {
-        return true;
-    }
+    public boolean isSpectator() { return true; }
 
     @Override
     public boolean isInsideWall() {

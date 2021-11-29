@@ -34,17 +34,15 @@ public class GhostSelectScreen extends Screen {
 
         assert client != null;
 
-        addButton(new ButtonWidget(i - 50, 190, 98, 20, ScreenTexts.PROCEED, button ->
+        addDrawableChild(new ButtonWidget(i - 50, 190, 98, 20, ScreenTexts.PROCEED, button ->
         {
             ReplayGhost.toSelectGhosts(seed, selectionGhost.toArray(new UUID[0]));
-            client.openScreen(parent);
+            client.setScreen(parent);
         }));
-        addButton(new ButtonWidget(i + 50, 190, 98, 20, ScreenTexts.CANCEL, button -> {
-            client.openScreen(parent);
-        }));
+        addDrawableChild(new ButtonWidget(i + 50, 190, 98, 20, ScreenTexts.CANCEL, button -> client.setScreen(parent)));
 
         listWidget = new GhostSelectWidget(this, this.client, width, height, 48, 180, 24);
-        addChild(listWidget);
+        addSelectableChild(listWidget);
         listWidget.update(seed, listWidget.getScrollAmount(), true);
     }
 
@@ -71,6 +69,6 @@ public class GhostSelectScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (client != null) client.openScreen(parent);
+        if (client != null) client.setScreen(parent);
     }
 }
