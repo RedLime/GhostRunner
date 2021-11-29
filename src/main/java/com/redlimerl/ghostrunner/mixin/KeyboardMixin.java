@@ -1,7 +1,6 @@
 package com.redlimerl.ghostrunner.mixin;
 
 import com.redlimerl.ghostrunner.GhostRunner;
-import com.redlimerl.ghostrunner.record.GhostInfo;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Final;

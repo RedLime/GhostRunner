@@ -1,6 +1,5 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.data.UpdateStatus;
