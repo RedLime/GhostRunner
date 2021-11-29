@@ -6,11 +6,16 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class AllWorkstationsSubmit extends ExtensionCategorySubmit {
 
-    public AllWorkstationsSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public AllWorkstationsSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("78966qq8", ghostData.getType() == GhostType.RSG ? "mlnrvxjq" : "5q85vy3q"));
+        this.updateVariable(new SubmitVariable("78966qq8", ghostData.getType() == GhostType.RANDOM_SEED ? "mlnrvxjq" : "5q85vy3q"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

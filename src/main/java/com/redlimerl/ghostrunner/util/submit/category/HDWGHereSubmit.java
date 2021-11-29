@@ -10,14 +10,23 @@ import java.util.List;
 
 public class HDWGHereSubmit extends ExtensionCategorySubmit {
 
-    public HDWGHereSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public HDWGHereSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SS/RS/SSG/RSG
-        this.updateVariable(new SubmitVariable("onv23j0l", ghostData.getType() == GhostType.RSG ? "klryyejq" : "jqzxxrg1"));
+        if (isGlitchRun()) {
+            this.updateVariable(new SubmitVariable("onv23j0l", ghostData.getType() == GhostType.RANDOM_SEED ? "21g22wnl" : "4qye44d1"));
+        } else {
+            this.updateVariable(new SubmitVariable("onv23j0l", ghostData.getType() == GhostType.RANDOM_SEED ? "klryyejq" : "jqzxxrg1"));
+        }
 
         //Version (HDWGH)
-        this.updateVariable(getVersionGroupVariable("e8m6yrwl", getVersion()));
+        this.updateVariable(getVersionRangeVariable("e8m6yrwl", getVersion()));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return true;
     }
 
     @Override

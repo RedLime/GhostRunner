@@ -6,14 +6,19 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class FullIA15LevelsSubmit extends ExtensionCategorySubmit {
 
-    public FullIA15LevelsSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public FullIA15LevelsSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("ql64j7k8", ghostData.getType() == GhostType.RSG ? "klry022q" : "jqzx53m1"));
+        this.updateVariable(new SubmitVariable("ql64j7k8", ghostData.getType() == GhostType.RANDOM_SEED ? "klry022q" : "jqzx53m1"));
 
         //Structures
         this.updateVariable(new SubmitVariable("68kdv6yl", ghostData.isGenerateStructures() ? "5q8r5o31" : "4qy83r21"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

@@ -28,7 +28,7 @@ import java.util.UUID;
 public class GhostInfo {
 
     public static final GhostInfo INSTANCE = new GhostInfo();
-    public static GhostType currentGhostType = GhostType.RSG;
+    public static GhostType currentGhostType = GhostType.RANDOM_SEED;
     static {
         InGameTimer.onComplete(igt -> {
             InGameTimer timer = InGameTimer.getInstance();
@@ -37,8 +37,11 @@ public class GhostInfo {
                             "RTA: "+InGameTimer.timeToStringFormat(timer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
             MinecraftClient.getInstance().getToastManager().add(
-                    new GenericToast(timer.getCategory().getCode().split("#")[1].replaceAll("_", " ") + " / " + currentGhostType.name(),
-                            "S: "+INSTANCE.ghostData.getSeed(), null)
+                    new GenericToast("Category : " + timer.getCategory().getText().getString(),
+                            "Seed Type : " + currentGhostType.getContext(), null)
+            );
+            MinecraftClient.getInstance().getToastManager().add(
+                    new GenericToast("Seed : "+INSTANCE.ghostData.getSeed(), null,null)
             );
             INSTANCE.save();
         });
@@ -100,8 +103,8 @@ public class GhostInfo {
     public void setup(GeneratorOptions generatorOptions) {
         this.clear();
         currentGhostType = GhostRunner.OPTIONAL_LONG.isPresent()
-                ? (GhostRunner.IS_FSG && SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY ? GhostType.FSG : GhostType.SSG)
-                : GhostType.RSG;
+                ? (GhostRunner.IS_FSG && SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY ? GhostType.FILTERED_SEED : GhostType.SET_SEED)
+                : GhostType.RANDOM_SEED;
         ghostData = GhostData.create(generatorOptions, currentGhostType, GhostRunner.IS_HARDCORE);
 
         GhostRunner.OPTIONAL_LONG = OptionalLong.empty();
@@ -131,13 +134,14 @@ public class GhostInfo {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save() {
+        boolean isSolo = MinecraftClient.getInstance().isInSingleplayer();
         new Thread(() -> {
             ghostData.setRealTimeAttack(getTimer().getRealTimeAttack());
             ghostData.setInGameTime(getTimer().getInGameTime());
             ghostData.setGhostCategory(getTimer().getCategory());
             ghostData.updateCreatedDate();
             ghostData.setUseF3(GhostRunner.IS_USE_F3);
-            ghostData.setSubmittable(!GhostRunner.IS_USE_GHOST);
+            ghostData.setSubmittable(!(!isSolo || GhostRunner.IS_USE_GHOST));
             ghostData.setGhostName(ghostData.getDefaultName());
             String playData = Crypto.encrypt(this.toDataString(), ghostData.getKey());
 

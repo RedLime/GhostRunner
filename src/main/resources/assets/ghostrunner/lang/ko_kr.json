@@ -9,6 +9,7 @@
   "ghostrunner.title.select_ghosts": "고스트 선택",
   "ghostrunner.title.description": "설명란",
   "ghostrunner.title.video_url": "영상 링크",
+  "ghostrunner.title.is_glitch_run": "Glitch 런인가요?",
   "ghostrunner.title.success": "성공했습니다!",
   "ghostrunner.menu.order": "정렬",
   "ghostrunner.menu.order.record": "기록 순",

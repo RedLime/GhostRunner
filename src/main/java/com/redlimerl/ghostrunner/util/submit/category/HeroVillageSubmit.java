@@ -6,11 +6,16 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class HeroVillageSubmit extends ExtensionCategorySubmit {
 
-    public HeroVillageSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public HeroVillageSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("ylqmmpzn", ghostData.getType() == GhostType.RSG ? "21gy6gm1" : "xqk738yl"));
+        this.updateVariable(new SubmitVariable("ylqmmpzn", ghostData.getType() == GhostType.RANDOM_SEED ? "21gy6gm1" : "xqk738yl"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

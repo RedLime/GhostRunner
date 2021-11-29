@@ -6,14 +6,19 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class FullInventorySubmit extends ExtensionCategorySubmit {
 
-    public FullInventorySubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public FullInventorySubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("gnxvj0pl", ghostData.getType() == GhostType.RSG ? "81032zw1" : "mlnrgw0q"));
+        this.updateVariable(new SubmitVariable("gnxvj0pl", ghostData.getType() == GhostType.RANDOM_SEED ? "81032zw1" : "mlnrgw0q"));
 
         //Structures
         this.updateVariable(new SubmitVariable("9l77x1pl", ghostData.isGenerateStructures() ? "p123gpvl" : "81p8r2el"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

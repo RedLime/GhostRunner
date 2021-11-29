@@ -10,17 +10,22 @@ import java.util.List;
 
 public class AllMineralsSubmit extends ExtensionCategorySubmit {
 
-    public AllMineralsSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public AllMineralsSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("ylqkwzvl", ghostData.getType() == GhostType.RSG ? "21dowjpq" : "klr6meol"));
+        this.updateVariable(new SubmitVariable("ylqkwzvl", ghostData.getType() == GhostType.RANDOM_SEED ? "21dowjpq" : "klr6meol"));
 
         //Structures
         this.updateVariable(new SubmitVariable("gnxr1zgn", ghostData.isGenerateStructures() ? "mlnkn4ol" : "81098vo1"));
 
         //Version (All Minerals)
-        this.updateVariable(getVersionGroupVariable("9l77rgzl", getVersion()));
+        this.updateVariable(getVersionRangeVariable("9l77rgzl", getVersion()));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

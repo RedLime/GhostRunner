@@ -11,8 +11,8 @@ import java.util.List;
 
 public abstract class ExtensionCategorySubmit extends SubmitData {
 
-    public ExtensionCategorySubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public ExtensionCategorySubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
     }
 
     @Override
@@ -49,12 +49,12 @@ public abstract class ExtensionCategorySubmit extends SubmitData {
     }
 
     @Override
-    public String getVersionGroupVariableKey() {
+    public String getVersionRangeVariableKey() {
         return "ylpm5erl";
     }
 
     @Override
-    public List<SubmitVersionGroup> getVersionGroups() {
+    public List<SubmitVersionGroup> getVersionRange() {
         ArrayList<SubmitVersionGroup> versionGroups = new ArrayList<>();
         versionGroups.add(new SubmitVersionGroup("5lemm651", "1.7", "1.8"));
         versionGroups.add(new SubmitVersionGroup("0q5gg9ml", "1.8", "1.9"));

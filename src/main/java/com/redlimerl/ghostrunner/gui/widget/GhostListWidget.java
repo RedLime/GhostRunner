@@ -105,7 +105,7 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
         else ghosts.sort(Comparator.comparing(GhostData::getSeed));
 
         for (GhostData ghost : ghosts) {
-            if ((filter == 1 && ghost.getType() == GhostType.SSG) || (filter == 2 && ghost.getType() == GhostType.RSG) || (filter == 3 && ghost.getType() == GhostType.FSG) || !(filter > 0 && filter < 4)) {
+            if ((filter == 1 && ghost.getType() == GhostType.SET_SEED) || (filter == 2 && ghost.getType() == GhostType.RANDOM_SEED) || (filter == 3 && ghost.getType() == GhostType.FILTERED_SEED) || !(filter > 0 && filter < 4)) {
                 boolean b1 = ghost.getGhostName().toLowerCase(Locale.ROOT).contains(supplier.get().toLowerCase(Locale.ROOT));
                 boolean b2 = supplier.get().toLowerCase(Locale.ROOT).contains(ghost.getGhostName().toLowerCase(Locale.ROOT));
                 boolean b3 = String.valueOf(ghost.getSeed()).contains(supplier.get());
@@ -160,13 +160,13 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
                     .append(new LiteralText(" / RTA: ").formatted(Formatting.GRAY))
                     .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getRealTimeAttack())).formatted(Formatting.UNDERLINE).formatted(Formatting.LIGHT_PURPLE))
                     .append(new LiteralText(" / ").formatted(Formatting.GRAY))
-                    .append(new LiteralText(ghost.getGhostCategory().getCode().split("#")[1].replaceAll("_", " ")).formatted(Formatting.UNDERLINE).formatted(Formatting.AQUA));
+                    .append(ghost.getGhostCategory().getText().formatted(Formatting.UNDERLINE).formatted(Formatting.AQUA));
             MutableText runnerContext = new TranslatableText("ghostrunner.context.by").append(": ")
                     .append(new LiteralText(ghost.getGhostUserName()).formatted(Formatting.UNDERLINE).formatted(Formatting.GRAY));
             MutableText modeContext = new LiteralText(" ")
                     .append(new TranslatableText("ghostrunner.context.method"))
                     .append(": ")
-                    .append(new LiteralText(ghost.getType() == GhostType.RSG ? "RSG" : ghost.getType() == GhostType.SSG ? "SSG" : "FSG")
+                    .append(new LiteralText(ghost.getType() == GhostType.RANDOM_SEED ? "RSG" : ghost.getType() == GhostType.SET_SEED ? "SSG" : "FSG")
                             .formatted(Formatting.UNDERLINE).formatted(Formatting.GRAY));
             if (ghost.isHardcore())
                 modeContext.append(new LiteralText(", ")).append(new TranslatableText("gameMode.hardcore").formatted(Formatting.UNDERLINE).formatted(Formatting.RED));

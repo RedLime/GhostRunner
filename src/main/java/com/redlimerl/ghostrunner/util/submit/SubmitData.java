@@ -22,50 +22,54 @@ import java.util.*;
 public abstract class SubmitData {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static SubmitData create(GhostData ghostData, String description, String videoUrl) {
+
+    public static SubmitData create(GhostData ghostData, String description, String videoUrl, boolean isGlitchRun) {
         if (ghostData.getGhostCategory() == RunCategory.ANY) {
-            if (ghostData.getType() == GhostType.FSG)
-                return new FSGlitchlessSubmit(ghostData, description, videoUrl);
-            else return new AnyPercentSubmit(ghostData, description, videoUrl);
+            if (ghostData.getType() == GhostType.FILTERED_SEED)
+                return new FilteredSeedSubmit(ghostData, description, videoUrl, isGlitchRun);
+            else return new AnyPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
+        }
+        if (ghostData.getGhostCategory() == RunCategory.ALL_ADVANCEMENTS) {
+            return new AllAdvancementSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.HIGH) {
-            return new HighPercentSubmit(ghostData, description, videoUrl);
+            return new HighPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.KILL_ALL_BOSSES || ghostData.getGhostCategory() == RunCategory.KILL_WITHER || ghostData.getGhostCategory() == RunCategory.KILL_ELDER_GUARDIAN) {
-            return new KillBossesSubmit(ghostData, description, videoUrl);
+            return new KillBossesSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.HOW_DID_WE_GET_HERE) {
-            return new HDWGHereSubmit(ghostData, description, videoUrl);
+            return new HDWGHereSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.HERO_OF_VILLAGE) {
-            return new HeroVillageSubmit(ghostData, description, videoUrl);
+            return new HeroVillageSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ARBALISTIC) {
-            return new ArbalisticSubmit(ghostData, description, videoUrl);
+            return new ArbalisticSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ENTER_NETHER) {
-            return new EnterNetherSubmit(ghostData, description, videoUrl);
+            return new EnterNetherSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ALL_SWORDS) {
-            return new AllSwordsSubmit(ghostData, description, videoUrl);
+            return new AllSwordsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ALL_MINERALS) {
-            return new AllMineralsSubmit(ghostData, description, videoUrl);
+            return new AllMineralsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.FULL_IA_15_LVL) {
-            return new FullIA15LevelsSubmit(ghostData, description, videoUrl);
+            return new FullIA15LevelsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ALL_WORKSTATIONS) {
-            return new AllWorkstationsSubmit(ghostData, description, videoUrl);
+            return new AllWorkstationsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.FULL_INV) {
-            return new FullInventorySubmit(ghostData, description, videoUrl);
+            return new FullInventorySubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.ENTER_END) {
-            return new EnterEndSubmit(ghostData, description, videoUrl);
+            return new EnterEndSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         if (ghostData.getGhostCategory() == RunCategory.HALF) {
-            return new HalfPercentSubmit(ghostData, description, videoUrl);
+            return new HalfPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         return null;
     }
@@ -76,10 +80,11 @@ public abstract class SubmitData {
     private final String date;
     private final String video;
     private final String comment;
+    private final boolean isGlitchRun;
     public final HashMap<String, Float> times = new HashMap<>();
     public final ArrayList<SubmitVariable> variables = new ArrayList<>();
 
-    public SubmitData(GhostData ghostData, String description, String videoUrl) {
+    public SubmitData(GhostData ghostData, String description, String videoUrl, boolean isGlitchRun) {
         if (!Utils.isUrl(videoUrl)) throw new IllegalArgumentException("video url is not URL");
 
         this.date = new SimpleDateFormat("yyyy-MM-dd").format(ghostData.getCreatedDate());
@@ -89,17 +94,24 @@ public abstract class SubmitData {
         this.times.put("realtime_noloads", 0f);
         this.times.put("ingame", ghostData.getInGameTime()/1000.f);
         this.ghostData = ghostData;
+        this.isGlitchRun = isGlitchRun;
 
         this.updateVariable(getModsVariable());
         this.updateVariable(getF3Variable());
         this.updateVariable(getDifficultyVariable());
         this.updateVariable(getVersionVariable());
-        this.updateVariable(getVersionGroupVariable());
+        this.updateVariable(getVersionRangeVariable());
     }
 
     public GhostData getGhostData() {
         return ghostData;
     }
+    
+    public boolean isGlitchRun() {
+        return isGlitchRun;
+    }
+    
+    public abstract boolean isSupportGlitchRun();
 
     public abstract String getCategoryKey();
 
@@ -122,14 +134,14 @@ public abstract class SubmitData {
         return null;
     }
 
-    public abstract String getVersionGroupVariableKey();
+    public abstract String getVersionRangeVariableKey();
 
-    public abstract List<SubmitVersionGroup> getVersionGroups();
+    public abstract List<SubmitVersionGroup> getVersionRange();
 
-    public SubmitVariable getVersionGroupVariable() {
-        return this.getVersionGroupVariable(getVersionGroupVariableKey(), getVersionGroups());
+    public SubmitVariable getVersionRangeVariable() {
+        return this.getVersionRangeVariable(getVersionRangeVariableKey(), getVersionRange());
     }
-    public SubmitVariable getVersionGroupVariable(String key, List<SubmitVersionGroup> groups) {
+    public SubmitVariable getVersionRangeVariable(String key, List<SubmitVersionGroup> groups) {
         for (SubmitVersionGroup versionGroup : groups) {
             if (versionGroup.isIn(ghostData.getClientVersion()))
                 return new SubmitVariable(key, versionGroup.getValue());

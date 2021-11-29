@@ -83,7 +83,7 @@ public class GhostEditScreen extends Screen {
                         client.openScreen(new GhostSubmitScreen(this, ghost));
                     }
                 } : (button) -> Util.getOperatingSystem().open(ghost.getRecordURL())));
-        this.isSupportCategory = SubmitData.create(ghost, "something", "https://www.youtube.com/watch?v=dQw4w9WgXcQ") != null;
+        this.isSupportCategory = SubmitData.create(ghost, "something", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", false) != null;
         this.submitButton.active = (!ghost.getRecordURL().isEmpty() || (!ghost.isSubmitted() && isOwnGhost)) && this.isSupportCategory && ghost.isSubmittable();
 
         addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.DONE, (button) -> close()));

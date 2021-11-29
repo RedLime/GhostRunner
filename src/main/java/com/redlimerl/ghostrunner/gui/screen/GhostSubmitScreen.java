@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.CheckboxWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -23,6 +24,7 @@ public class GhostSubmitScreen extends Screen {
     private TextFieldWidget descriptionField;
     private TextFieldWidget videoUrlField;
     private ButtonWidget submitButton;
+    private CheckboxWidget glitchRunCheckBox;
 
     public GhostSubmitScreen(Screen parent, GhostData ghostData) {
         super(new TranslatableText("ghostrunner.menu.submit_record"));
@@ -41,10 +43,12 @@ public class GhostSubmitScreen extends Screen {
                     new Thread(() -> {
                         try {
                             @SuppressWarnings("ConstantConditions")
-                            String record = SubmitData.create(ghostData, this.descriptionField.getText(), this.videoUrlField.getText()).submit();
-                            ghostData.setSubmitted(true);
-                            ghostData.setRecordURL(record);
-                            this.ghostData.update();
+                            String record = SubmitData.create(ghostData, this.descriptionField.getText(), this.videoUrlField.getText(), this.glitchRunCheckBox.isChecked()).submit();
+                            if (Utils.isUrl(record)) {
+                                ghostData.setSubmitted(true);
+                                ghostData.setRecordURL(record);
+                                this.ghostData.update();
+                            }
                             client.execute(() -> client.openScreen(new ConfirmScreen(bool -> {
                                 if (bool) {
                                     Util.getOperatingSystem().open(record);
@@ -72,14 +76,18 @@ public class GhostSubmitScreen extends Screen {
             }
         }, new TranslatableText("ghostrunner.title")));
 
-        this.videoUrlField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 9, 200, 20, new LiteralText("Video URL..."));
+        this.videoUrlField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 - 9, 200, 20, new LiteralText("Video URL..."));
         this.videoUrlField.setMaxLength(200);
         children.add(this.videoUrlField);
         setInitialFocus(this.videoUrlField);
 
-        this.descriptionField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 49, 200, 20, new LiteralText("..."));
+        this.descriptionField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 31, 200, 20, new LiteralText("..."));
         this.descriptionField.setMaxLength(200);
         children.add(this.descriptionField);
+
+        this.glitchRunCheckBox = this.addButton(new CheckboxWidget(width / 2 - 100, height / 4 + 60, 20, 20, new TranslatableText("ghostrunner.title.is_glitch_run"), false));
+        SubmitData testSubmit = SubmitData.create(this.ghostData, "", "https://www.youtube.com/", true);
+        this.glitchRunCheckBox.visible = testSubmit != null && testSubmit.isSupportGlitchRun();
     }
 
     @Override
@@ -87,11 +95,11 @@ public class GhostSubmitScreen extends Screen {
         submitButton.active = Utils.isUrl(videoUrlField.getText());
 
         this.renderBackground(matrices);
-        drawCenteredText(matrices, textRenderer, title, width / 2, 30, 16777215);
-        drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.not_need_seed_description"), width / 2, this.descriptionField.y + 28, 16777215);
+        drawCenteredText(matrices, textRenderer, title, width / 2, 20, 16777215);
+        drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.not_need_seed_description"), width / 2, this.submitButton.y - 12, 16777215);
         drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.ghostdata.title").append(": ")
-                        .append(ghostData.getType().name() + " | " + ghostData.getGhostCategory().getCode().split("#")[1].replaceAll("_", " ") + " | " + InGameTimer.timeToStringFormat(ghostData.getInGameTime())),
-                width / 2, this.descriptionField.y + 40, 16777215);
+                        .append(ghostData.getGhostCategory().getText().getString() + " | " + ghostData.getType().getContext() + " | " + InGameTimer.timeToStringFormat(ghostData.getInGameTime())),
+                width / 2, this.submitButton.y - 24, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.description"), width / 2 - 100, this.descriptionField.y - 10, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.video_url"), width / 2 - 100, this.videoUrlField.y - 10, 16777215);
         descriptionField.render(matrices, mouseX, mouseY, delta);

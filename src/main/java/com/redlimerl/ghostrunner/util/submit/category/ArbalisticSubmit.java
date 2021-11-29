@@ -6,14 +6,19 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class ArbalisticSubmit extends ExtensionCategorySubmit {
 
-    public ArbalisticSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public ArbalisticSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("j84edxyn", ghostData.getType() == GhostType.RSG ? "5legeoz1" : "013e203q"));
+        this.updateVariable(new SubmitVariable("j84edxyn", ghostData.getType() == GhostType.RANDOM_SEED ? "5legeoz1" : "013e203q"));
 
         //Structures
         this.updateVariable(new SubmitVariable("onvj9e0n", ghostData.isGenerateStructures() ? "013e3jrq" : "rqvw30r1"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

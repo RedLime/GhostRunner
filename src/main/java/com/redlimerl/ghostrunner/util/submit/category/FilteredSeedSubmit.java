@@ -7,16 +7,21 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVersionGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FSGlitchlessSubmit extends ExtensionCategorySubmit {
+public class FilteredSeedSubmit extends ExtensionCategorySubmit {
 
-    public FSGlitchlessSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public FilteredSeedSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //Player Count
         this.updateVariable(new SubmitVariable("ql61eov8", "81pvroe1"));
 
         //Version (Filtered Seed Glitchless)
-        this.updateVariable(this.getVersionGroupVariable("jlzrovq8", getVersion()));
+        this.updateVariable(this.getVersionRangeVariable("jlzrovq8", getVersion()));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

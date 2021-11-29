@@ -7,8 +7,8 @@ import com.redlimerl.speedrunigt.timer.RunCategory;
 
 public class KillBossesSubmit extends ExtensionCategorySubmit {
 
-    public KillBossesSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public KillBossesSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //Boss
         this.updateVariable(new SubmitVariable("dlo31yel",
@@ -17,7 +17,16 @@ public class KillBossesSubmit extends ExtensionCategorySubmit {
                         : ghostData.getGhostCategory() == RunCategory.KILL_ELDER_GUARDIAN ? "810wmd5q" : ""));
 
         //SS/RS/SSG/RSG
-        this.updateVariable(new SubmitVariable("jlz51w0l", ghostData.getType() == GhostType.RSG ? "zqor3v2q" : "5lmg4m4l"));
+        if (isGlitchRun()) {
+            this.updateVariable(new SubmitVariable("jlz51w0l", ghostData.getType() == GhostType.RANDOM_SEED ? "81w5d051" : "jq6zxe7l"));
+        } else {
+            this.updateVariable(new SubmitVariable("jlz51w0l", ghostData.getType() == GhostType.RANDOM_SEED ? "zqor3v2q" : "5lmg4m4l"));
+        }
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return true;
     }
 
     @Override

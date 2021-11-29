@@ -55,8 +55,8 @@ public class GhostInfoScreen extends Screen {
             addEntry(new Entry(this, "seed", String.valueOf(ghostData.getSeed())));
             addEntry(new Entry(this, "realtime", InGameTimer.timeToStringFormat(ghostData.getRealTimeAttack())));
             addEntry(new Entry(this, "ingametime", InGameTimer.timeToStringFormat(ghostData.getInGameTime())));
-            addEntry(new Entry(this, "category", ghostData.getGhostCategory().getCode().split("#")[1].replaceAll("_", " ")));
-            addEntry(new Entry(this, "gametype", ghostData.getType().name()));
+            addEntry(new Entry(this, "category", ghostData.getGhostCategory().getText().getString()));
+            addEntry(new Entry(this, "gametype", ghostData.getType().getContext()));
             addEntry(new Entry(this, "clientversion", ghostData.getClientVersion()));
             addEntry(new Entry(this, "ishardcore", ghostData.isHardcore() ? ScreenTexts.YES.getString() : ScreenTexts.NO.getString()));
             addEntry(new Entry(this, "difficulty", ghostData.getDifficulty().getTranslatableName().getString()));

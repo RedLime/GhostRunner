@@ -10,14 +10,23 @@ import java.util.List;
 
 public class HalfPercentSubmit extends ExtensionCategorySubmit {
 
-    public HalfPercentSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public HalfPercentSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //Version (Half%)
-        this.updateVariable(this.getVersionGroupVariable("p85r42xn", getVersion()));
+        this.updateVariable(this.getVersionRangeVariable("p85r42xn", getVersion()));
 
         //SS/SSG/RS/RSG
-        this.updateVariable(new SubmitVariable("38dpzqx8", ghostData.getType() == GhostType.RSG ? "mlnprwo1" : "810g3gol"));
+        if (isGlitchRun()) {
+            this.updateVariable(new SubmitVariable("38dpzqx8", ghostData.getType() == GhostType.RANDOM_SEED ? "9qjvjv7q" : "jq6n3nvl"));
+        } else {
+            this.updateVariable(new SubmitVariable("38dpzqx8", ghostData.getType() == GhostType.RANDOM_SEED ? "mlnprwo1" : "810g3gol"));
+        }
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return true;
     }
 
     @Override

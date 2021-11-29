@@ -10,17 +10,22 @@ import java.util.List;
 
 public class AllSwordsSubmit extends ExtensionCategorySubmit {
 
-    public AllSwordsSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public AllSwordsSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //SSG/RSG
-        this.updateVariable(new SubmitVariable("yn21z528", ghostData.getType() == GhostType.RSG ? "0q5g53nl" : "5lem4xz1"));
+        this.updateVariable(new SubmitVariable("yn21z528", ghostData.getType() == GhostType.RANDOM_SEED ? "0q5g53nl" : "5lem4xz1"));
 
         //Structures
         this.updateVariable(new SubmitVariable("wlexrpk8", ghostData.isGenerateStructures() ? "klr6nmml" : "21dorw5q"));
 
         //Version (All Swords)
-        this.updateVariable(getVersionGroupVariable("dloyre58", getVersion()));
+        this.updateVariable(getVersionRangeVariable("dloyre58", getVersion()));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return false;
     }
 
     @Override

@@ -5,11 +5,16 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class EnterEndSubmit extends ExtensionCategorySubmit {
 
-    public EnterEndSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public EnterEndSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
-        //SSG
-        this.updateVariable(new SubmitVariable("ylqmo4wn", "xqkkrdyq"));
+        //SS / SSG
+        this.updateVariable(new SubmitVariable("ylqmo4wn", isGlitchRun() ? "81pw7jkl" : "xqkkrdyq"));
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return true;
     }
 
     @Override

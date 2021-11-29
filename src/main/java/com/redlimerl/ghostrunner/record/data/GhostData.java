@@ -155,7 +155,7 @@ public class GhostData {
         for (GhostType value : GhostType.values()) {
             if (value.getId() == ghostType - (ghostType % 2)) return value;
         }
-        return GhostType.RSG;
+        return GhostType.RANDOM_SEED;
     }
 
     public boolean isSubmittable() {

@@ -6,11 +6,20 @@ import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
 
 public class HighPercentSubmit extends ExtensionCategorySubmit {
 
-    public HighPercentSubmit(GhostData ghostData, String description, String videoUrl) {
-        super(ghostData, description, videoUrl);
+    public HighPercentSubmit(GhostData ghostData, String description, String videoUrl, boolean isGlitch) {
+        super(ghostData, description, videoUrl, isGlitch);
 
         //RSG/SSG/RS/SS
-        this.updateVariable(new SubmitVariable("j8453v5n", ghostData.getType() == GhostType.RSG ? "jqz94j41" : "21g5gmxl"));
+        if (isGlitchRun()) {
+            this.updateVariable(new SubmitVariable("j8453v5n", ghostData.getType() == GhostType.RANDOM_SEED ? "21d5d03l" : "klr97g0l"));
+        } else {
+            this.updateVariable(new SubmitVariable("j8453v5n", ghostData.getType() == GhostType.RANDOM_SEED ? "jqz94j41" : "21g5gmxl"));
+        }
+    }
+
+    @Override
+    public boolean isSupportGlitchRun() {
+        return true;
     }
 
     @Override

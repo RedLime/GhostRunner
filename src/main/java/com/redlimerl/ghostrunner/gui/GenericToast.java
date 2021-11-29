@@ -2,11 +2,17 @@ package com.redlimerl.ghostrunner.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.hud.BackgroundHelper;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.toast.Toast;
 import net.minecraft.client.toast.ToastManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.StringRenderable;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.List;
 
 public class GenericToast implements Toast {
 
@@ -31,34 +37,63 @@ public class GenericToast implements Toast {
         }
 
         MinecraftClient client = manager.getGame();
+        TextRenderer textRenderer = client.textRenderer;
         client.getTextureManager().bindTexture(TOASTS_TEX);
         RenderSystem.color3f(1.0F, 1.0F, 1.0F);
-        manager.drawTexture(matrices, 0, 0, 0, 32, 160, 32);
-        float xpos = this.icon != null ? 30: 10;
+        manager.drawTexture(matrices, 0, 0, 0, 0, 160, 32);
+
+        int xPos = this.icon != null ? 30: 10;
+        int lineSize;
+        List<StringRenderable> titleList = textRenderer.wrapLines(StringRenderable.plain(this.titleKey), 115 + (this.icon != null ? 10 : 30));
         if (this.descriptionKey == null) {
-            String[] title = this.getLocalizedTitle().split("\n");
+            String[] title = this.titleKey.split("\n");
             if (title.length == 2) {
-                client.textRenderer.draw(matrices, title[0], xpos, 7, 0x000000);
-                client.textRenderer.draw(matrices, title[1], xpos, 18, 0x000000);
+                textRenderer.draw(matrices, title[0], xPos, 7, 16777215);
+                textRenderer.draw(matrices, title[1], xPos, 18, 16777215);
+                lineSize = 2;
+            } else if (titleList.size() > 1) {
+                textRenderer.draw(matrices, titleList.get(0), xPos, 7, 16777215);
+                textRenderer.draw(matrices, titleList.get(1), xPos, 18, 16777215);
+                lineSize = 2;
             } else {
-                client.textRenderer.draw(matrices, this.getLocalizedTitle(), xpos, 12, 0x000000);
+                textRenderer.draw(matrices, this.titleKey, xPos, 12, 16777215);
+                lineSize = 1;
             }
         } else {
-            client.textRenderer.draw(matrices, this.getLocalizedTitle(), xpos, 7, 0x000000);
-            client.textRenderer.draw(matrices, this.getLocalizedDescription(), xpos, 18, 0x000000);
+            List<StringRenderable> descriptionList = textRenderer.wrapLines(StringRenderable.plain(this.descriptionKey), 115 + (this.icon != null ? 10 : 30));
+            if (titleList.size() + descriptionList.size() > 2) {
+                lineSize = Math.min(titleList.size(), 2) + Math.min(descriptionList.size(), 2);
+
+                long timestamp = Math.abs(2000L + (lineSize * 500L) - (currentTime - this.startTime));
+                float col = Math.min(timestamp / 400F, 1F);
+                int color = BackgroundHelper.ColorMixer.getArgb(MathHelper.floor(col * 255), 255, 255, 255);
+
+                if (timestamp > 8) {
+                    if (currentTime - this.startTime >= 2000L + (lineSize * 500L)) {
+                        if (descriptionList.size() > 1) {
+                            textRenderer.draw(matrices, descriptionList.get(0), xPos, 7, color);
+                            textRenderer.draw(matrices, descriptionList.get(1), xPos, 18, color);
+                        } else {
+                            textRenderer.draw(matrices, this.descriptionKey, xPos, 12, color);
+                        }
+                    } else {
+                        if (titleList.size() > 1) {
+                            textRenderer.draw(matrices, titleList.get(0), xPos, 7, color);
+                            textRenderer.draw(matrices, titleList.get(1), xPos, 18, color);
+                        } else {
+                            textRenderer.draw(matrices, this.titleKey, xPos, 12, color);
+                        }
+                    }
+                }
+            } else {
+                textRenderer.draw(matrices, this.titleKey, xPos, 7, 0xFFFFFF);
+                textRenderer.draw(matrices, this.descriptionKey, xPos, 18, 0xFFFFFF);
+                lineSize = 2;
+            }
         }
 
         if(this.icon != null) manager.getGame().getItemRenderer().renderGuiItemIcon(this.icon, 8, 8);
 
-        return currentTime - this.startTime < 5000L ? Toast.Visibility.SHOW : Toast.Visibility.HIDE;
+        return currentTime - this.startTime < 4000L + (lineSize * 1000L) ? Toast.Visibility.SHOW : Toast.Visibility.HIDE;
     }
-
-    public String getLocalizedDescription() {
-        return I18n.translate(this.descriptionKey);
-    }
-
-    public String getLocalizedTitle() {
-        return I18n.translate(this.titleKey);
-    }
-
 }

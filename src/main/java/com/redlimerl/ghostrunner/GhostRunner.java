@@ -137,13 +137,8 @@ public class GhostRunner implements ClientModInitializer {
                 new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
                     MinecraftClient client = MinecraftClient.getInstance();
                     if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
-
-                    debug(new TranslatableText("ghostrunner.option.toggle_point_notification.context").getString());
-                    debug(new LiteralText("ghostrunner.option.toggle_point_notification.context").getString());
                 })
         );
-        debug(new TranslatableText("ghostrunner.option.toggle_point_notification.context").getString());
-        debug(new LiteralText("ghostrunner.option.toggle_point_notification.context").getString());
     }
 
     public static void debug(Object obj) {
