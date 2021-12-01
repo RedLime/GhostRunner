@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -120,12 +121,12 @@ public class GhostListScreen extends Screen {
 
             for (String success : successList) {
                 MinecraftClient.getInstance().getToastManager().add(
-                        new GenericToast("ghostrunner.message.import_success", ": "+success, new ItemStack(Items.CHEST)));
+                        new GenericToast(I18n.translate("ghostrunner.message.import_success"), ": "+success, new ItemStack(Items.CHEST)));
             }
 
             for (String fail : failList) {
                 MinecraftClient.getInstance().getToastManager().add(
-                        new GenericToast("ghostrunner.message.import_fail", ": "+fail, new ItemStack(Items.BEDROCK)));
+                        new GenericToast(I18n.translate("ghostrunner.message.import_fail"), ": "+fail, new ItemStack(Items.BEDROCK)));
             }
 
             if (!successList.isEmpty()) {
