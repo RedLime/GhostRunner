@@ -39,7 +39,7 @@ public class GenericToast implements Toast {
             this.justUpdated = false;
         }
 
-        MinecraftClient client = manager.getGame();
+        MinecraftClient client = manager.getClient();
         TextRenderer textRenderer = client.textRenderer;
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
@@ -96,7 +96,7 @@ public class GenericToast implements Toast {
             }
         }
 
-        if(this.icon != null) manager.getGame().getItemRenderer().renderGuiItemIcon(this.icon, 8, 8);
+        if(this.icon != null) client.getItemRenderer().renderGuiItemIcon(this.icon, 8, 8);
 
         return currentTime - this.startTime < 4000L + (lineSize * 1000L) ? Toast.Visibility.SHOW : Toast.Visibility.HIDE;
     }
