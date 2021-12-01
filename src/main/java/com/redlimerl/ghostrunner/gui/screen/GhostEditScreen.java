@@ -13,6 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -62,7 +63,7 @@ public class GhostEditScreen extends Screen {
                 (button) -> {
                     client.keyboard.setClipboard(String.valueOf(ghost.getSeed()));
                     client.getToastManager().add(
-                            new GenericToast("ghostrunner.message.copy_seed_to_clipboard", null, new ItemStack(Items.WRITABLE_BOOK))
+                            new GenericToast(I18n.translate("ghostrunner.message.copy_seed_to_clipboard"), null, new ItemStack(Items.WRITABLE_BOOK))
                     );
                 }));
 
