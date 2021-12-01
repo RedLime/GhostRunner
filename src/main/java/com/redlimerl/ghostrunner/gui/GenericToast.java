@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GenericToast implements Toast {
 
-    private static Identifier TEXTURE = new Identifier("textures/gui/toasts.png");
+    private static final Identifier TEXTURE = new Identifier("textures/gui/toasts.png");
 
     private boolean justUpdated = true;
     private long startTime;
