@@ -1,3 +1,7 @@
+# Timer feature has been moved to another mod!
+If you find the In-Game timer mod, move to this repo.
+> [SpeedRunIGT](https://github.com/RedLime/SpeedRunIGT) for In-Game Timer
+
 # GhostRunner for 1.16.1
 
 Ghost Runner is made for Minecraft speedrunners.
