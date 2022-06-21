@@ -9,6 +9,7 @@ public class Timeline {
 
     public Timeline() {}
     public Timeline(String data) {
+        if (data.isEmpty()) return;
         for (String s : data.split("\n")) {
             String[] d = s.split(":");
             timeline.put(Moment.valueOf(d[0]), Long.parseLong(d[1]));

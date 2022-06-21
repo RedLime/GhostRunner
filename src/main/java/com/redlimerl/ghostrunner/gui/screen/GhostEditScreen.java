@@ -5,6 +5,7 @@ import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.ghostrunner.util.submit.SubmitData;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.BackgroundHelper;
@@ -72,7 +73,7 @@ public class GhostEditScreen extends Screen {
         this.submitButton = addButton(new ButtonWidget(width / 2 - 100, yPos + 99, 200, 20,
                 ghost.getRecordURL().isEmpty() ? new TranslatableText("ghostrunner.menu.submit_record") : new TranslatableText("ghostrunner.menu.open_speedrun_com"),
                 ghost.getRecordURL().isEmpty() ? (button) -> {
-                    if (SpeedRunOptions.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY).length() < 24) {
+                    if (SpeedRunOption.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY).length() < 24) {
                         client.openScreen(new ConfirmScreen(bool ->
                                 client.openScreen(bool ? new APIKeyScreen(bool2 ->
                                         client.openScreen(bool2 ? new GhostSubmitScreen(this, ghost) : this)) : this),

@@ -5,6 +5,7 @@ import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.ghostrunner.util.submit.SubmitData;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -98,7 +99,7 @@ public class GhostSubmitScreen extends Screen {
         drawCenteredText(matrices, textRenderer, title, width / 2, 20, 16777215);
         drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.message.not_need_seed_description"), width / 2, this.submitButton.y - 12, 16777215);
         drawCenteredText(matrices, textRenderer, new TranslatableText("ghostrunner.ghostdata.title").append(": ")
-                        .append(ghostData.getGhostCategory().getText().getString() + " | " + ghostData.getType().getContext() + " | " + InGameTimer.timeToStringFormat(ghostData.getInGameTime())),
+                        .append(ghostData.getGhostCategory().getText().getString() + " | " + ghostData.getType().getContext() + " | " + InGameTimerUtils.timeToStringFormat(ghostData.getInGameTime())),
                 width / 2, this.submitButton.y - 24, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.description"), width / 2 - 100, this.descriptionField.y - 10, 16777215);
         drawTextWithShadow(matrices, textRenderer, new TranslatableText("ghostrunner.title.video_url"), width / 2 - 100, this.videoUrlField.y - 10, 16777215);

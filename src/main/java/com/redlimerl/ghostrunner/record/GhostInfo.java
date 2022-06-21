@@ -6,9 +6,11 @@ import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.record.data.Timeline;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
-import com.redlimerl.speedrunigt.timer.RunCategory;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
+import com.redlimerl.speedrunigt.timer.category.RunCategories;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -33,8 +35,8 @@ public class GhostInfo {
         InGameTimer.onComplete(igt -> {
             InGameTimer timer = InGameTimer.getInstance();
             MinecraftClient.getInstance().getToastManager().add(
-                    new GenericToast("IGT: "+InGameTimer.timeToStringFormat(timer.getInGameTime()),
-                            "RTA: "+InGameTimer.timeToStringFormat(timer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
+                    new GenericToast("IGT: "+InGameTimerUtils.timeToStringFormat(timer.getInGameTime()),
+                            "RTA: "+InGameTimerUtils.timeToStringFormat(timer.getRealTimeAttack()), new ItemStack(Items.DRAGON_EGG))
             );
             MinecraftClient.getInstance().getToastManager().add(
                     new GenericToast("Category : " + timer.getCategory().getText().getString(),
@@ -103,7 +105,7 @@ public class GhostInfo {
     public void setup(GeneratorOptions generatorOptions) {
         this.clear();
         currentGhostType = GhostRunner.OPTIONAL_LONG.isPresent()
-                ? (GhostRunner.IS_FSG && SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY ? GhostType.FILTERED_SEED : GhostType.SET_SEED)
+                ? (GhostRunner.IS_FSG && SpeedRunOption.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategories.ANY ? GhostType.FILTERED_SEED : GhostType.SET_SEED)
                 : GhostType.RANDOM_SEED;
         ghostData = GhostData.create(generatorOptions, currentGhostType, GhostRunner.IS_HARDCORE);
 

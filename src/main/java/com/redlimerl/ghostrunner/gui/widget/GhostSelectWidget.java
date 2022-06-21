@@ -5,6 +5,7 @@ import com.redlimerl.ghostrunner.gui.screen.GhostSelectScreen;
 import com.redlimerl.ghostrunner.record.ReplayGhost;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -103,7 +104,7 @@ public class GhostSelectWidget extends ElementListWidget<GhostSelectWidget.Ghost
                 ghostName = ghostName.substring(indexCount, 20+indexCount);
             }
 
-            selectWidget.client.textRenderer.draw(matrices, new LiteralText("").append(new LiteralText("[" + InGameTimer.timeToStringFormat(ghostData.getInGameTime()) + "] ")
+            selectWidget.client.textRenderer.draw(matrices, new LiteralText("").append(new LiteralText("[" + InGameTimerUtils.timeToStringFormat(ghostData.getInGameTime()) + "] ")
                     .formatted(Formatting.GRAY)).append(new LiteralText(ghostName)), (float) (x + 4), (float) (y + 6), GhostSelectScreen.WHITE_COLOR);
         }
 

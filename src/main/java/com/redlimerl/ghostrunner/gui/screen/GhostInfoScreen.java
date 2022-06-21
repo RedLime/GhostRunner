@@ -2,6 +2,7 @@ package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -53,8 +54,8 @@ public class GhostInfoScreen extends Screen {
 
             GhostData ghostData = infoScreen.ghostData;
             addEntry(new Entry(this, "seed", String.valueOf(ghostData.getSeed())));
-            addEntry(new Entry(this, "realtime", InGameTimer.timeToStringFormat(ghostData.getRealTimeAttack())));
-            addEntry(new Entry(this, "ingametime", InGameTimer.timeToStringFormat(ghostData.getInGameTime())));
+            addEntry(new Entry(this, "realtime", InGameTimerUtils.timeToStringFormat(ghostData.getRealTimeAttack())));
+            addEntry(new Entry(this, "ingametime", InGameTimerUtils.timeToStringFormat(ghostData.getInGameTime())));
             addEntry(new Entry(this, "category", ghostData.getGhostCategory().getText().getString()));
             addEntry(new Entry(this, "gametype", ghostData.getType().getContext()));
             addEntry(new Entry(this, "clientversion", ghostData.getClientVersion()));
@@ -89,8 +90,8 @@ public class GhostInfoScreen extends Screen {
             public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
                 TextRenderer textRenderer = statsListWidget.infoScreen.textRenderer;
                 MutableText text = new TranslatableText("ghostrunner.ghostdata." + key).formatted(Formatting.GRAY);
-                statsListWidget.drawStringWithShadow(matrices, textRenderer, text.getString(), x + 2, y + 1, index % 2 == 0 ? 16777215 : 9474192);
-                statsListWidget.drawStringWithShadow(matrices, textRenderer, value, x + 2 + 213 - textRenderer.getWidth(value), y + 1, index % 2 == 0 ? 16777215 : 9474192);
+                drawStringWithShadow(matrices, textRenderer, text.getString(), x + 2, y + 1, index % 2 == 0 ? 16777215 : 9474192);
+                drawStringWithShadow(matrices, textRenderer, value, x + 2 + 213 - textRenderer.getWidth(value), y + 1, index % 2 == 0 ? 16777215 : 9474192);
             }
         }
     }

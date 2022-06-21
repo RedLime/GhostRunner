@@ -1,6 +1,7 @@
 package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.data.RunnerOptions;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.gui.screen.Screen;
@@ -32,7 +33,7 @@ public class APIKeyScreen extends Screen {
 
         this.saveButton = addButton(new ButtonWidget(width / 2 - 100, height / 4 + 32, 98, 20, new TranslatableText("selectWorld.edit.save"),
                 (button) -> {
-                    SpeedRunOptions.setOption(RunnerOptions.SPEEDRUN_COM_API_KEY, finalKey);
+                    SpeedRunOption.setOption(RunnerOptions.SPEEDRUN_COM_API_KEY, finalKey);
                     booleanConsumer.accept(true);
                 }));
 
@@ -42,7 +43,7 @@ public class APIKeyScreen extends Screen {
 
         this.apiKeyTextField = new TextFieldWidget(textRenderer, width / 2 - 100, height / 4 + 9, 200, 20, new LiteralText("API Key..."));
         this.apiKeyTextField.setMaxLength(30);
-        this.apiKeyTextField.setText(SpeedRunOptions.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY));
+        this.apiKeyTextField.setText(SpeedRunOption.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY));
         children.add(this.apiKeyTextField);
         setInitialFocus(this.apiKeyTextField);
     }

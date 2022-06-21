@@ -6,7 +6,7 @@ import com.redlimerl.ghostrunner.gui.widget.GhostListWidget;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.util.TarGzUtil;
 import com.redlimerl.ghostrunner.util.Utils;
-import com.redlimerl.speedrunigt.option.SpeedRunOptionScreen;
+import com.redlimerl.speedrunigt.gui.screen.SpeedRunOptionScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
