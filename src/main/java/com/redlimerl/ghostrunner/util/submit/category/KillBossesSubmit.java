@@ -3,7 +3,7 @@ package com.redlimerl.ghostrunner.util.submit.category;
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.util.submit.SubmitVariable;
-import com.redlimerl.speedrunigt.timer.RunCategory;
+import com.redlimerl.speedrunigt.timer.category.RunCategories;
 
 public class KillBossesSubmit extends ExtensionCategorySubmit {
 
@@ -12,9 +12,9 @@ public class KillBossesSubmit extends ExtensionCategorySubmit {
 
         //Boss
         this.updateVariable(new SubmitVariable("dlo31yel",
-                ghostData.getGhostCategory() == RunCategory.KILL_ALL_BOSSES ? "9qjx48gl"
-                        : ghostData.getGhostCategory() == RunCategory.KILL_WITHER ? "mlnz0odl"
-                        : ghostData.getGhostCategory() == RunCategory.KILL_ELDER_GUARDIAN ? "810wmd5q" : ""));
+                ghostData.getGhostCategory() == RunCategories.KILL_ALL_BOSSES ? "9qjx48gl"
+                        : ghostData.getGhostCategory() == RunCategories.KILL_WITHER ? "mlnz0odl"
+                        : ghostData.getGhostCategory() == RunCategories.KILL_ELDER_GUARDIAN ? "810wmd5q" : ""));
 
         //SS/RS/SSG/RSG
         if (isGlitchRun()) {

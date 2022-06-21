@@ -5,6 +5,7 @@ import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.data.UpdateStatus;
 import com.redlimerl.ghostrunner.data.UpdateStatus.Status;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -38,11 +39,11 @@ public class GhostRunnerInfoScreen extends Screen {
         addButton(new ButtonWidget(width / 2 - 75, height - 80, 150, 20, new TranslatableText("ghostrunner.menu.open_github_repo"), (ButtonWidget button) -> Util.getOperatingSystem().open("https://github.com/RedLime/GhostRunner/")));
         addButton(new ButtonWidget(width / 2 - 100, height - 40, 200, 20, ScreenTexts.BACK, (ButtonWidget button) -> client.openScreen(parent)));
 
-        addButton(new CheckboxWidget(20, 20, 20, 20, new TranslatableText("ghostrunner.option.toggle_update_notification"), SpeedRunOptions.getOption(RunnerOptions.UPDATE_NOTIFICATION)) {
+        addButton(new CheckboxWidget(20, 20, 20, 20, new TranslatableText("ghostrunner.option.toggle_update_notification"), SpeedRunOption.getOption(RunnerOptions.UPDATE_NOTIFICATION)) {
             @Override
             public void onPress() {
                 super.onPress();
-                SpeedRunOptions.setOption(RunnerOptions.UPDATE_NOTIFICATION, isChecked());
+                SpeedRunOption.setOption(RunnerOptions.UPDATE_NOTIFICATION, isChecked());
             }
         });
     }

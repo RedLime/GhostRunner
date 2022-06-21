@@ -3,8 +3,9 @@ package com.redlimerl.ghostrunner.mixin.screen;
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.gui.screen.GhostSelectScreen;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
-import com.redlimerl.speedrunigt.timer.RunCategory;
+import com.redlimerl.speedrunigt.timer.category.RunCategories;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ScreenTexts;
@@ -64,7 +65,7 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "setMoreOptionsOpen(Z)V", at = @At("HEAD"))
     private void moreOption(boolean b, CallbackInfo ci) {
-        if (SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY) {
+        if (SpeedRunOption.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategories.ANY) {
             this.fsgButton.visible = b;
         }
         this.ghostButton.visible = b && GhostRunner.OPTIONAL_LONG.isPresent();
@@ -78,14 +79,14 @@ public abstract class CreateWorldScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/MoreOptionsDialog;render(Lnet/minecraft/client/util/math/MatrixStack;IIF)V"))
     private void injected(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        if (SpeedRunOptions.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategory.ANY)
+        if (SpeedRunOption.getOption(SpeedRunOptions.TIMER_CATEGORY) == RunCategories.ANY)
             drawStringWithShadow(matrices, this.textRenderer, I18n.translate("ghostrunner.world.is_fsg.description"), this.width / 2 + 5, 172, -6250336);
     }
 
     @Override
     public boolean changeFocus(boolean lookForwards) {
         boolean result = super.changeFocus(lookForwards);
-        while ((!SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) && getFocused() == this.fsgButton) || getFocused() == this.ghostButton) {
+        while ((!SpeedRunOption.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) && getFocused() == this.fsgButton) || getFocused() == this.ghostButton) {
             result = super.changeFocus(lookForwards);
         }
         return result;

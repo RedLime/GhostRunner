@@ -7,8 +7,9 @@ import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.ghostrunner.util.submit.category.*;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
-import com.redlimerl.speedrunigt.timer.RunCategory;
+import com.redlimerl.speedrunigt.timer.category.RunCategories;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,51 +25,51 @@ public abstract class SubmitData {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static SubmitData create(GhostData ghostData, String description, String videoUrl, boolean isGlitchRun) {
-        if (ghostData.getGhostCategory() == RunCategory.ANY) {
+        if (ghostData.getGhostCategory() == RunCategories.ANY) {
             if (ghostData.getType() == GhostType.FILTERED_SEED)
                 return new FilteredSeedSubmit(ghostData, description, videoUrl, isGlitchRun);
             else return new AnyPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ALL_ADVANCEMENTS) {
+        if (ghostData.getGhostCategory() == RunCategories.ALL_ADVANCEMENTS) {
             return new AllAdvancementSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.HIGH) {
+        if (ghostData.getGhostCategory() == RunCategories.HIGH) {
             return new HighPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.KILL_ALL_BOSSES || ghostData.getGhostCategory() == RunCategory.KILL_WITHER || ghostData.getGhostCategory() == RunCategory.KILL_ELDER_GUARDIAN) {
+        if (ghostData.getGhostCategory() == RunCategories.KILL_ALL_BOSSES || ghostData.getGhostCategory() == RunCategories.KILL_WITHER || ghostData.getGhostCategory() == RunCategories.KILL_ELDER_GUARDIAN) {
             return new KillBossesSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.HOW_DID_WE_GET_HERE) {
+        if (ghostData.getGhostCategory() == RunCategories.HOW_DID_WE_GET_HERE) {
             return new HDWGHereSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.HERO_OF_VILLAGE) {
+        if (ghostData.getGhostCategory() == RunCategories.HERO_OF_VILLAGE) {
             return new HeroVillageSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ARBALISTIC) {
+        if (ghostData.getGhostCategory() == RunCategories.ARBALISTIC) {
             return new ArbalisticSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ENTER_NETHER) {
+        if (ghostData.getGhostCategory() == RunCategories.ENTER_NETHER) {
             return new EnterNetherSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ALL_SWORDS) {
+        if (ghostData.getGhostCategory() == RunCategories.ALL_SWORDS) {
             return new AllSwordsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ALL_MINERALS) {
+        if (ghostData.getGhostCategory() == RunCategories.ALL_MINERALS) {
             return new AllMineralsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.FULL_IA_15_LVL) {
+        if (ghostData.getGhostCategory() == RunCategories.FULL_IA_15_LVL) {
             return new FullIA15LevelsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ALL_WORKSTATIONS) {
+        if (ghostData.getGhostCategory() == RunCategories.ALL_WORKSTATIONS) {
             return new AllWorkstationsSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.FULL_INV) {
+        if (ghostData.getGhostCategory() == RunCategories.FULL_INV) {
             return new FullInventorySubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.ENTER_END) {
+        if (ghostData.getGhostCategory() == RunCategories.ENTER_END) {
             return new EnterEndSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
-        if (ghostData.getGhostCategory() == RunCategory.HALF) {
+        if (ghostData.getGhostCategory() == RunCategories.HALF) {
             return new HalfPercentSubmit(ghostData, description, videoUrl, isGlitchRun);
         }
         return null;
@@ -154,7 +155,7 @@ public abstract class SubmitData {
     }
 
     public String submit() throws IOException, IllegalStateException, ClassCastException  {
-        String authKey = SpeedRunOptions.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY);
+        String authKey = SpeedRunOption.getOption(RunnerOptions.SPEEDRUN_COM_API_KEY);
 
         URL u = new URL("https://www.speedrun.com/api/v1/runs");
         HttpURLConnection c = (HttpURLConnection) u.openConnection();

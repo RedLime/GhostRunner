@@ -2,6 +2,7 @@ package com.redlimerl.ghostrunner.gui.screen;
 
 import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
@@ -53,8 +54,8 @@ public class GhostInfoScreen extends Screen {
 
             GhostData ghostData = infoScreen.ghostData;
             addEntry(new Entry(this, "seed", String.valueOf(ghostData.getSeed())));
-            addEntry(new Entry(this, "realtime", InGameTimer.timeToStringFormat(ghostData.getRealTimeAttack())));
-            addEntry(new Entry(this, "ingametime", InGameTimer.timeToStringFormat(ghostData.getInGameTime())));
+            addEntry(new Entry(this, "realtime", InGameTimerUtils.timeToStringFormat(ghostData.getRealTimeAttack())));
+            addEntry(new Entry(this, "ingametime", InGameTimerUtils.timeToStringFormat(ghostData.getInGameTime())));
             addEntry(new Entry(this, "category", ghostData.getGhostCategory().getText().getString()));
             addEntry(new Entry(this, "gametype", ghostData.getType().getContext()));
             addEntry(new Entry(this, "clientversion", ghostData.getClientVersion()));

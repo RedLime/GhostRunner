@@ -8,6 +8,7 @@ import com.redlimerl.ghostrunner.record.data.GhostData;
 import com.redlimerl.ghostrunner.record.data.GhostType;
 import com.redlimerl.ghostrunner.util.TarGzUtil;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ConfirmScreen;
@@ -156,9 +157,9 @@ public class GhostListWidget extends AlwaysSelectedEntryListWidget<GhostListWidg
             float xOffset = (float) x;
 
             MutableText timeContext = new LiteralText(" IGT: ").formatted(Formatting.GRAY)
-                    .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getInGameTime())).formatted(Formatting.UNDERLINE).formatted(Formatting.YELLOW))
+                    .append(new LiteralText(InGameTimerUtils.timeToStringFormat(ghost.getInGameTime())).formatted(Formatting.UNDERLINE).formatted(Formatting.YELLOW))
                     .append(new LiteralText(" / RTA: ").formatted(Formatting.GRAY))
-                    .append(new LiteralText(InGameTimer.timeToStringFormat(ghost.getRealTimeAttack())).formatted(Formatting.UNDERLINE).formatted(Formatting.LIGHT_PURPLE))
+                    .append(new LiteralText(InGameTimerUtils.timeToStringFormat(ghost.getRealTimeAttack())).formatted(Formatting.UNDERLINE).formatted(Formatting.LIGHT_PURPLE))
                     .append(new LiteralText(" / ").formatted(Formatting.GRAY))
                     .append(ghost.getGhostCategory().getText().formatted(Formatting.UNDERLINE).formatted(Formatting.AQUA));
             MutableText runnerContext = new TranslatableText("ghostrunner.context.by").append(": ")

@@ -19,6 +19,9 @@
   "entrypoints": {
     "client": [
       "com.redlimerl.ghostrunner.GhostRunner"
+    ],
+    "speedrunigt": [
+      "com.redlimerl.ghostrunner.impl.speedrunigt.OptionButtonsImpl"
     ]
   },
   "mixins": [

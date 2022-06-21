@@ -5,8 +5,10 @@ import com.redlimerl.ghostrunner.data.RunnerOptions;
 import com.redlimerl.ghostrunner.entity.GhostEntity;
 import com.redlimerl.ghostrunner.record.data.Timeline;
 import com.redlimerl.ghostrunner.util.Utils;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.DefaultSkinHelper;
@@ -57,7 +59,7 @@ public class ReplayGhost {
 
     //체크 포인트 메세지
     public static void sendBestCheckPointMessage(Timeline.Moment moment) {
-        if (!SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE)) return;
+        if (!SpeedRunOption.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE)) return;
 
         long bestTime = 0;
         for (ReplayGhost replayGhost : ghostList) {
@@ -74,15 +76,15 @@ public class ReplayGhost {
         if (bestTime == 0) {
             player.sendMessage(
                     new TranslatableText("ghostrunner.message.checkpoint_new")
-                            .append(new LiteralText(" [" + InGameTimer.timeToStringFormat(nowTime) + "]")
+                            .append(new LiteralText(" [" + InGameTimerUtils.timeToStringFormat(nowTime) + "]")
                                     .formatted(Formatting.YELLOW)), false
             );
         } else {
             boolean isFast = bestTime > nowTime;
             player.sendMessage(
                     new TranslatableText("ghostrunner.message.checkpoint_" + (isFast ? "faster" : "slower") + "_than_ghost")
-                            .append(new LiteralText(" [" + InGameTimer.timeToStringFormat(nowTime)).formatted(Formatting.YELLOW))
-                            .append(new LiteralText(" (" + (isFast ? "-" : "+") + " " + (InGameTimer.timeToStringFormat(Math.abs(nowTime - bestTime))) + ")")
+                            .append(new LiteralText(" [" + InGameTimerUtils.timeToStringFormat(nowTime)).formatted(Formatting.YELLOW))
+                            .append(new LiteralText(" (" + (isFast ? "-" : "+") + " " + (InGameTimerUtils.timeToStringFormat(Math.abs(nowTime - bestTime))) + ")")
                                     .formatted(isFast ? Formatting.GREEN : Formatting.RED))
                             .append(new LiteralText("]").formatted(Formatting.YELLOW)), false);
         }

@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.redlimerl.ghostrunner.GhostRunner;
 import com.redlimerl.ghostrunner.gui.GenericToast;
 import com.redlimerl.ghostrunner.util.Utils;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
@@ -84,7 +85,7 @@ public class UpdateStatus {
     public void popNotice() {
         if (!isPopped && status == Status.OUTDATED) {
             isPopped = true;
-            if (!SpeedRunOptions.getOption(RunnerOptions.UPDATE_NOTIFICATION)) return;
+            if (!SpeedRunOption.getOption(RunnerOptions.UPDATE_NOTIFICATION)) return;
             MinecraftClient client = MinecraftClient.getInstance();
             client.getToastManager().add(new GenericToast(I18n.translate("ghostrunner.message.update.found_new_update"), null, new ItemStack(Items.ANVIL)));
         }

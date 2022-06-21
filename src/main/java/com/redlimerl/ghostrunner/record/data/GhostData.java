@@ -2,7 +2,9 @@ package com.redlimerl.ghostrunner.record.data;
 
 import com.redlimerl.ghostrunner.util.Utils;
 import com.redlimerl.speedrunigt.timer.InGameTimer;
-import com.redlimerl.speedrunigt.timer.RunCategory;
+import com.redlimerl.speedrunigt.timer.InGameTimerUtils;
+import com.redlimerl.speedrunigt.timer.category.RunCategories;
+import com.redlimerl.speedrunigt.timer.category.RunCategory;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.gen.GeneratorOptions;
@@ -83,7 +85,7 @@ public class GhostData {
                 false,
                 Difficulty.EASY.getName(),
                 "",
-                RunCategory.ANY.name(),
+                InGameTimer.getInstance().getCategory().getID(),
                 generatorOptions.shouldGenerateStructures(),
                 true
         );
@@ -207,7 +209,7 @@ public class GhostData {
     }
 
     public String getDefaultName() {
-        return seed + "_" + InGameTimer.timeToStringFormat(inGameTime).replace(':', '.') + "_" + DATE_FORMAT.format(getCreatedDate());
+        return seed + "_" + InGameTimerUtils.timeToStringFormat(inGameTime).replace(':', '.') + "_" + DATE_FORMAT.format(getCreatedDate());
     }
 
     public Path getPath() {
@@ -223,11 +225,11 @@ public class GhostData {
     }
 
     public void setGhostCategory(RunCategory ghostCategory) {
-        this.ghostCategory = ghostCategory.name();
+        this.ghostCategory = ghostCategory.getID();
     }
 
     public RunCategory getGhostCategory() {
-        return RunCategory.valueOf(ghostCategory);
+        return RunCategory.getCategory(ghostCategory);
     }
 
     public boolean isUseF3() {

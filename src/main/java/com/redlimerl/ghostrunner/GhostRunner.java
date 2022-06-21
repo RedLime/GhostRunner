@@ -8,6 +8,7 @@ import com.redlimerl.ghostrunner.entity.GhostEntity;
 import com.redlimerl.ghostrunner.gui.screen.APIKeyScreen;
 import com.redlimerl.ghostrunner.gui.screen.GhostRunnerInfoScreen;
 import com.redlimerl.ghostrunner.gui.widget.OpacitySliderWidget;
+import com.redlimerl.speedrunigt.option.SpeedRunOption;
 import com.redlimerl.speedrunigt.option.SpeedRunOptions;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -94,8 +95,8 @@ public class GhostRunner implements ClientModInitializer {
         KeyBinding ghostToggleKey = KeyBindingHelper.registerKeyBinding(new KeyBinding("ghostrunner.title.toggle_ghost", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, "ghostrunner.title"));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (ghostToggleKey.wasPressed()) {
-                boolean option = !SpeedRunOptions.getOption(RunnerOptions.TOGGLE_GHOST);
-                SpeedRunOptions.setOption(RunnerOptions.TOGGLE_GHOST, option);
+                boolean option = !SpeedRunOption.getOption(RunnerOptions.TOGGLE_GHOST);
+                SpeedRunOption.setOption(RunnerOptions.TOGGLE_GHOST, option);
                 if (client.player != null) {
                     client.player.sendMessage(new LiteralText("[Ghost Runner] ").formatted(Formatting.BOLD).formatted(Formatting.AQUA)
                             .append(new TranslatableText("ghostrunner.message.toggle_ghost", new TranslatableText("addServer.resourcePack." + (option ? "enabled" : "disabled"))).formatted(Formatting.WHITE)), true);
@@ -103,37 +104,7 @@ public class GhostRunner implements ClientModInitializer {
             }
         });
 
-        SpeedRunOptions.addOptionButton(screen -> new OpacitySliderWidget());
-        SpeedRunOptions.addOptionButton(screen ->
-                        new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.option.toggle_point_notification").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE) ? ScreenTexts.ON : ScreenTexts.OFF), button -> {
-                            SpeedRunOptions.setOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE, !SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE));
-                            button.setMessage(new TranslatableText("ghostrunner.option.toggle_point_notification").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_CHECKPOINT_MESSAGE) ? ScreenTexts.ON : ScreenTexts.OFF));
-                        })
-                , new TranslatableText("ghostrunner.option.toggle_point_notification.context"));
-        SpeedRunOptions.addOptionButton(screen ->
-                        new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) ? ScreenTexts.ON : ScreenTexts.OFF), button -> {
-                            SpeedRunOptions.setOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG, !SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG));
-                            button.setMessage(new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode").append(": ").append(SpeedRunOptions.getOption(RunnerOptions.TOGGLE_MACRO_FOR_FSG) ? ScreenTexts.ON : ScreenTexts.OFF));
-                        })
-                , new TranslatableText("ghostrunner.option.toggle_fsg_macro_mode.context"));
-        SpeedRunOptions.addOptionButton(screen ->
-                new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.register_api_key"), button -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new APIKeyScreen(bool -> client.openScreen(screen)));
-                })
-        );
-        SpeedRunOptions.addOptionButton(screen ->
-                new ButtonWidget(0, 0, 150, 20, new TranslatableText("ghostrunner.menu.info"), button -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new GhostRunnerInfoScreen(screen));
-                })
-        );
-        SpeedRunOptions.addOptionButton(screen ->
-                new ButtonWidget(0, 0, 150, 20, new TranslatableText("options.controls"), button -> {
-                    MinecraftClient client = MinecraftClient.getInstance();
-                    if (client != null) client.openScreen(new ControlsOptionsScreen(screen, client.options));
-                })
-        );
+        UPDATE_STATUS.check();
     }
 
     public static void debug(Object obj) {
